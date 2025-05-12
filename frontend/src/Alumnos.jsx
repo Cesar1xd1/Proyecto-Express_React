@@ -9,7 +9,35 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Alumnos = () => {
   const [alumnos, setAlumnos] = useState([]);
+  {/* varibles de Paginacion */}
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const rowsPerPage = 5;
+  
+  {/* proxima pagina*/}
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  {/* anterior pagina */}
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+    }
+  };
+  {/* Calcular botones necesarios y su numeracion */}
+  const getPaginationRange = () => {
+    const rangeSize = 3; 
+    const start = Math.floor((currentPage - 1) / rangeSize) * rangeSize + 1;
+    const end = Math.min(start + rangeSize - 1, totalPages);
+    return [start, end];
+  };
+{/* variables para usar en el dom */}
+const [startPage, endPage] = getPaginationRange();
+const alumnosDT = alumnos.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
+{/* Eliminar */}
 const eliminarAlumno = (id) => {
   Swal.fire({
     title: '¿Estás seguro?',
@@ -40,21 +68,26 @@ const eliminarAlumno = (id) => {
   });
 };
 
-
+{/* Cargar/actualizar registro */}
   const fetchAlumnos = () => {
-  fetch('http://localhost:3001/alumnos')
-    .then(res => res.json())
-    .then(data => setAlumnos(data))
-    .catch(err => console.error('Error al obtener alumnos:', err));
-};
+    fetch('http://localhost:3001/alumnos')
+      .then(res => res.json())
+      .then(data => {
+        setAlumnos(data);
+        setTotalPages(Math.ceil(data.length / rowsPerPage)); // Establece el número total de páginas
+      })
+      .catch(err => console.error('Error al obtener alumnos:', err));
+  };
 
+{/* registros Cargados */}  
 useEffect(() => {
  fetchAlumnos();
 }, []);
 
+{/* Alta */}
 const enviarDatos = () => {
   const datos = {
-    numControl: '773',
+    numControl: '909',
     nombre: 'Juan',
     primerAp: 'Pérez',
     segundoAp: 'Gómez',
@@ -84,8 +117,6 @@ const enviarDatos = () => {
 };
 
 
-
-
   return (
 
 
@@ -110,21 +141,23 @@ const enviarDatos = () => {
           <div className="table-responsive">
             <table className="table table-bordered table-striped">
               <thead>
-                <tr>
-                  <th>Num. Control</th>
+                <tr className='text-center'>
+                  <th>Numero de Control</th>
                   <th>Nombre</th>
-                  <th>Primer Ap.</th>
-                  <th>Segundo Ap.</th>
+                  <th colSpan={2} className='text-center'>Apellidos</th>
+                  
                   <th>Semestre</th>
                   <th>Carrera</th>
                   <th>Fecha de nacimiento</th>
                   <th>Num. de Telefono</th>
-                  <th>Acciones</th>
+                  <th colSpan={2} className='text-center'>Accion</th>
+                  
                 </tr>
               </thead>
               <tbody>
-                {alumnos.length > 0 ? (
-                  alumnos.map((row) => (
+                {/* Cargar registros de forma dinamica */}
+                {alumnosDT.length > 0 ? (
+                  alumnosDT.map((row) => (
                     <tr key={row._id}>
                       <td>{row.numControl}</td>
                       <td>{row.nombre}</td>
@@ -138,34 +171,54 @@ const enviarDatos = () => {
                         <button
                           type="button"
                           className="btn btn-info btn-sm"
-                        >
-                          Editar
-                        </button>
+                        >Editar</button>
+                        </td>
+                        <td>
                         <button
                           type="button"
                           className="btn btn-danger btn-sm"
                           onClick={() => eliminarAlumno(row._id)}
-                        >
-                          Eliminar
-                        </button>
+                        >Eliminar</button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="9" className="text-center">No hay registros.</td>
+                    <td colSpan={9} className="text-center">No hay registros.</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
+          {/* Paginacion */}
+          <nav aria-label="Paginación">
+  <ul className="pagination justify-content-center">
+    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+      <button className="page-link" onClick={handlePrevious}>
+        Anterior
+      </button>
+    </li>
+    {[...Array(endPage - startPage + 1)].map((_, index) => (
+      <li key={startPage + index} className={`page-item ${currentPage === startPage + index ? 'active' : ''}`}>
+        <button className="page-link" onClick={() => setCurrentPage(startPage + index)}>
+          {startPage + index}
+        </button>
+      </li>
+    ))}
+    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+      <button className="page-link" onClick={handleNext}>
+        Siguiente
+      </button>
+    </li>
+  </ul>
+</nav>
         </div>
       </div>
       
 
 
 
-
+{/* Modal Altas */}
 <div class="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
