@@ -13,6 +13,27 @@ const Alumnos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const rowsPerPage = 5;
+  const esquema = {
+    numControl: '',
+    nombre: '',
+    primerAp: '',
+    segundoAp: '',
+    semestre: '1',
+    carrera: 'ISC',
+    fechaNac: '',
+    numTel: ''
+  };
+
+  const [datos,setDatos] = useState (esquema);
+
+  
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setDatos(prev => ({
+    ...prev,
+    [name]: value,
+  }));
+};
   
   {/* proxima pagina*/}
   const handleNext = () => {
@@ -86,17 +107,6 @@ useEffect(() => {
 
 {/* Alta */}
 const enviarDatos = () => {
-  const datos = {
-    numControl: '909',
-    nombre: 'Juan',
-    primerAp: 'Pérez',
-    segundoAp: 'Gómez',
-    semestre: '3',
-    carrera: 'ISC',
-    fechaNac: '2000-01-01',
-    numTel: '1234567890'
-  };
-
   fetch('http://localhost:3001/alumnos', {
     method: 'POST',
     headers: {
@@ -109,12 +119,24 @@ const enviarDatos = () => {
       console.log('Alumno agregado:', data);
       Swal.fire('Éxito', 'Alumno agregado correctamente', 'success');
       fetchAlumnos();
+    setDatos(esquema);
     })
     .catch(err => {
       console.error('Error al agregar:', err);
       Swal.fire('Error', 'No se pudo agregar el alumno', 'error');
     });
 };
+
+if(document.getElementById("fechaNac")){
+  
+                                      document.getElementById("fechaNac").addEventListener("click", function () {
+  this.showPicker();
+});
+
+}
+
+
+
 
 
   return (
@@ -232,25 +254,27 @@ const enviarDatos = () => {
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label>Numero de Control:</label>
-                                    <input type="text" name="numControl" id="numControl" class="form-control" />
+                                    <input type="text" name="numControl" id="numControl" 
+                                    value={datos.numControl} onChange={handleChange} class="form-control" />
                                 </div>
                                 <div class="mb-3">
                                     <label>Nombre:</label>
-                                    <input type="text" name="nombre" id="nombre" class="form-control" />
+                                    <input type="text" name="nombre" id="nombre" 
+                                    value={datos.nombre} onChange={handleChange}class="form-control" />
                                 </div>
                                 <div class="mb-3">
                                     <label>Primer Apellido:</label>
-                                    <input type="text" name="primerAp" id="primerAp" class="form-control" />
+                                    <input type="text" name="primerAp" id="primerAp" value={datos.primerAp} onChange={handleChange}class="form-control" />
                                 </div>
                                 <div class="mb-3">
                                     <label>Segundo Apellido:</label>
-                                    <input type="text" name="segundoAp" id="segundoAp" class="form-control" />
+                                    <input type="text" name="segundoAp" id="segundoAp" value={datos.segundoAp} onChange={handleChange}class="form-control" />
                                 </div>
                                 
                                <div class="mb-3">
     <label>Semestre</label>
-    <select name="semestre" id="semestre" class="form-control" >
-        
+    <select name="semestre" id="semestre" class="form-control"
+    value={datos.semestre} onChange={handleChange} >
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -267,7 +291,8 @@ const enviarDatos = () => {
 </div>
                                 <div class="mb-3">
     <label>Carrera</label>
-    <select name="carrera" id="carrera" class="form-control">
+    <select name="carrera" id="carrera" class="form-control"
+    value={datos.carrera} onChange={handleChange}>
         
         <option value="ISC">ISC</option>
         <option value="IM">IM</option>
@@ -278,11 +303,14 @@ const enviarDatos = () => {
 </div>
 								<div class="mb-3">
                                     <label>Fecha de Nacimiento:</label>
-                                    <input type="date" name="fechaNac" id="fechaNac" class="form-control" />
+                                    <input type="date" name="fechaNac" id="fechaNac" value={datos.fechaNac} onChange={handleChange}class="form-control" />
+                                    <script>
+                                      
+                                    </script>
                                 </div>
 								<div class="mb-3">
                                     <label>Num. De Telefono</label>
-                                    <input type="text" name="numTel" id="numTel" class="form-control" />
+                                    <input type="text" name="numTel" id="numTel" value={datos.numTel} onChange={handleChange}class="form-control" />
                                 </div>
                             </div>
                             
