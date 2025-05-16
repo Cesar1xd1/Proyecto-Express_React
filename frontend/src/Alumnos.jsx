@@ -159,17 +159,7 @@ const guardar = (id) => {
     });
 };
 
-if(document.getElementById("fechaNac")){
-    document.getElementById("fechaNac").addEventListener("click", function () {
-  this.showPicker();
-});
-}
-if(document.getElementById("fechaNac2")){
-    document.getElementById("fechaNac2").addEventListener("click", function () {
-  this.showPicker();
-});
 
-}
 
 
 
@@ -280,42 +270,42 @@ if(document.getElementById("fechaNac2")){
 
 
 {/* Modal Altas */}
-<div class="modal fade" id="modalA" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div className="modal fade" id="modalA" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h1 className="modal-title fs-5" id="exampleModalLabel">Agregar</h1>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" ></button>
       </div>
-      <div class="modal-body">
+      <div className="modal-body">
         <form id="alumnoform">
                            
-                            <div class="modal-body">
-                                <div class="mb-3">
+                            <div className="modal-body">
+                                <div className="mb-3">
                                     <label>Numero de Control:</label>
                                     <input type="text" name="numControl" id="numControl" 
                                     value={datos.numControl} onChange={handleChange} 
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label>Nombre:</label>
                                     <input type="text" name="nombre" id="nombre" 
-                                    value={datos.nombre} onChange={handleChange} required class="form-control" />
+                                    value={datos.nombre} onChange={handleChange} required className="form-control" />
                                 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label>Primer Apellido:</label>
                                     <input type="text" name="primerAp" id="primerAp" value={datos.primerAp} onChange={handleChange}
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label>Segundo Apellido:</label>
                                     <input type="text" name="segundoAp" id="segundoAp" value={datos.segundoAp} onChange={handleChange}
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
                                 
-                               <div class="mb-3">
+                               <div className="mb-3">
     <label>Semestre</label>
-    <select name="semestre" id="semestre" class="form-control"
+    <select name="semestre" id="semestre" className="form-control"
     value={datos.semestre} onChange={handleChange} required >
         <option value="1">1</option>
         <option value="2">2</option>
@@ -331,9 +321,9 @@ if(document.getElementById("fechaNac2")){
         <option value="12">12</option>
     </select>
 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
     <label>Carrera</label>
-    <select name="carrera" id="carrera" class="form-control"
+    <select name="carrera" id="carrera" className="form-control"
     value={datos.carrera} onChange={handleChange} required>
         <option value="ISC">ISC</option>
         <option value="IM">IM</option>
@@ -342,26 +332,25 @@ if(document.getElementById("fechaNac2")){
         <option value="IIA">IIA</option>
     </select>
 </div>
-								<div class="mb-3">
+								<div className="mb-3">
                                     <label>Fecha de Nacimiento:</label>
                                     <input type="date" name="fechaNac" id="fechaNac" value={datos.fechaNac} onChange={handleChange} 
-                                    required class="form-control" />
-                                    <script>
-                                      
-                                    </script>
+                                    onClick={(e) => {e.target.showPicker();}}
+                                    required className="form-control" />
+                                    
                                 </div>
-								<div class="mb-3">
+								<div className="mb-3">
                                     <label>Num. De Telefono</label>
                                     <input type="text" name="numTel" id="numTel" value={datos.numTel} onChange={handleChange}
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
                             </div>
                             
                         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onClick={() => enviarDatos}>Agregar</button>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => enviarDatos}>Agregar</button>
       </div>
     </div>
   </div>
@@ -369,44 +358,44 @@ if(document.getElementById("fechaNac2")){
 
 
 {/* Modal Cambios */}
-<div class="modal fade" id="modalC" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div className="modal fade" id="modalC" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h1 className="modal-title fs-5" id="exampleModalLabel">Editar</h1>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div className="modal-body">
         <form id="alumnoform">
                            
-                            <div class="modal-body">
-                                <div class="mb-3">
+                            <div className="modal-body">
+                                <div className="mb-3">
                                     <label>Numero de Control:</label>
                                     <input type="text" name="numControl" id="numControl" 
                                     value={alumnoSeleccionado.numControl} 
                                     readOnly
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label>Nombre:</label>
                                     <input type="text" name="nombre" id="nombre" 
                                     value={alumnoSeleccionado.nombre} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, nombre: e.target.value })}
-                                     required class="form-control" />
+                                     required className="form-control" />
                                 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label>Primer Apellido:</label>
                                     <input type="text" name="primerAp" id="primerAp" value={alumnoSeleccionado.primerAp} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, primerAp: e.target.value })}
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
                                     <label>Segundo Apellido:</label>
                                     <input type="text" name="segundoAp" id="segundoAp" value={alumnoSeleccionado.segundoAp} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, segundoAp: e.target.value })}
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
                                 
-                               <div class="mb-3">
+                               <div className="mb-3">
     <label>Semestre</label>
-    <select name="semestre" id="semestre" class="form-control"
+    <select name="semestre" id="semestre" className="form-control"
     value={alumnoSeleccionado.semestre} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, semestre: e.target.value })} required >
         <option value="1">1</option>
         <option value="2">2</option>
@@ -422,9 +411,9 @@ if(document.getElementById("fechaNac2")){
         <option value="12">12</option>
     </select>
 </div>
-                                <div class="mb-3">
+                                <div className="mb-3">
     <label>Carrera</label>
-    <select name="carrera" id="carrera" class="form-control"
+    <select name="carrera" id="carrera" className="form-control"
     value={alumnoSeleccionado.carrera} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, carrera: e.target.value })} required>
         <option value="ISC">ISC</option>
         <option value="IM">IM</option>
@@ -433,26 +422,27 @@ if(document.getElementById("fechaNac2")){
         <option value="IIA">IIA</option>
     </select>
 </div>
-								<div class="mb-3">
+								<div className="mb-3">
                                     <label>Fecha de Nacimiento:</label>
                                     <input type="date" name="fechaNac2" id="fechaNac2" value={alumnoSeleccionado.fechaNac} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, fechaNac: e.target.value })} 
-                                    required class="form-control" />
+                                    onClick={(e) => {e.target.showPicker();}}
+                                    required className="form-control" />
                                     <script>
                                       
                                     </script>
                                 </div>
-								<div class="mb-3">
+								<div className="mb-3">
                                     <label>Num. De Telefono</label>
                                     <input type="text" name="numTel" id="numTel" value={alumnoSeleccionado.numTel} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, numTel: e.target.value })}
-                                    required class="form-control" />
+                                    required className="form-control" />
                                 </div>
                             </div>
                             
                         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick={() => guardar(alumnoSeleccionado._id)}>Guardar</button>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => guardar(alumnoSeleccionado._id)}>Guardar</button>
       </div>
     </div>
   </div>

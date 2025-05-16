@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import Alumnos from './Alumnos';
+
 
 function App() {
   const [mensaje, setMensaje] = useState('');
@@ -11,10 +13,8 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>Frontend con React</h1>
-      <p>{mensaje}</p>
-    </div>
+    <Alumnos/>
+    
   );
 }
 
