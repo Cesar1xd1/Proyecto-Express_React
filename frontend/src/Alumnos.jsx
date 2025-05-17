@@ -101,7 +101,7 @@ const eliminarAlumno = (id) => {
 
 {/* Cargar/actualizar registro */}
   const fetchAlumnos = () => {
-    fetch('http://localhost:3001/alumnos')
+    fetch('http://localhost:3001/alumnos/')
       .then(res => res.json())
       .then(data => {
         setAlumnos(data);

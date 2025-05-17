@@ -37,7 +37,6 @@ const alumnoSchema = new mongoose.Schema({
     carrera : String,
     fechaNac : String,
     numTel : String
-    
 });
 
 const Alumno = mongoose.model('Alumno', alumnoSchema);
@@ -59,7 +58,6 @@ app.post('/alumnos', async (request, response)=>{
     });
     const nuevoAlumno = await alumno.save();
     response.status(201).json({exito:true});
-    
 });
 
 //-----BAJAS
