@@ -17,7 +17,7 @@ app.get('/api/saludo', (req, res) => {
 
 app.use(express.static(__dirname));
 
-mongoose.connect('mongodb+srv://cesar_mongo:mongo1234@cluster0.hko7z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+mongoose.connect('mongodb+srv://proyectotuto25:LUkjcAJeiUGv87rQ@cluster0.bqpjzcp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
 const connection = mongoose.connection;
 
