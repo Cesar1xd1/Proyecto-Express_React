@@ -350,7 +350,7 @@ const guardar = (id) => {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => enviarDatos}>Agregar</button>
+        <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => enviarDatos()}>Agregar</button>
       </div>
     </div>
   </div>
