@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+
+
 const Alumnos = () => {
   const [alumnos, setAlumnos] = useState([]);
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({
@@ -39,9 +41,9 @@ const cargarAlumno = (alumno) => {
   
 const handleChange = (e) => {
   const { name, value } = e.target;
-  setDatos(prev => ({
+  setAlumnoSeleccionado(prev => ({
     ...prev,
-    [name]: value,
+    [name]: value
   }));
 };
   
@@ -145,8 +147,15 @@ const enviarDatos = (e) => {
 };
 
 
-{/* Alta */}
-const guardar = (id) => {
+{/* Cambios */}
+const guardar = (e, id) => {
+  e.preventDefault();
+
+  if (!e.target.checkValidity()) {
+    e.target.reportValidity();
+    return;
+  }
+
   fetch(`http://localhost:3001/alumnos/${id}`, {
     method: 'PUT',
     headers: {
@@ -156,16 +165,17 @@ const guardar = (id) => {
   })
     .then(res => res.json())
     .then(data => {
-      console.log('Alumno editado:', data);
       Swal.fire('Éxito', 'Cambios guardados correctamente', 'success');
       fetchAlumnos();
-    setDatos(esquema);
+      setDatos(esquema);
+      
     })
     .catch(err => {
-      console.error('Error al agregar:', err);
+      console.error('Error al guardar:', err);
       Swal.fire('Error', 'No se pudo realizar el cambio', 'error');
     });
 };
+
 
 
 
@@ -409,6 +419,7 @@ const guardar = (id) => {
 
 
 {/* Modal Cambios */}
+<form onSubmit={(e) => guardar(e, alumnoSeleccionado._id)}>
 <div className="modal fade" id="modalC" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
@@ -417,13 +428,12 @@ const guardar = (id) => {
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
-        <form id="alumnoform">
-                           
                             <div className="modal-body">
                                 <div className="mb-3">
                                     <label>Numero de Control:</label>
                                     <input type="text" name="numControl" id="numControl" 
                                     value={alumnoSeleccionado.numControl} 
+                                    
                                     readOnly
                                     required className="form-control" />
                                 </div>
@@ -488,16 +498,15 @@ const guardar = (id) => {
                                     required className="form-control" />
                                 </div>
                             </div>
-                            
-                        </form>
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => guardar(alumnoSeleccionado._id)}>Guardar</button>
+        <button type="submit" className="btn btn-primary" >Guardar</button>
       </div>
     </div>
   </div>
 </div>
+</form>
 
     </div>
   );
