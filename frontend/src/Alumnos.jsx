@@ -116,7 +116,14 @@ useEffect(() => {
 }, []);
 
 {/* Alta */}
-const enviarDatos = () => {
+const enviarDatos = (e) => {
+  e.preventDefault(); // evita que el formulario se envíe sin validar
+  if (!e.target.checkValidity()) {
+    // Esto fuerza al navegador a mostrar los errores de validación
+    e.target.reportValidity();
+    return;
+  }
+
   fetch('http://localhost:3001/alumnos', {
     method: 'POST',
     headers: {
@@ -129,13 +136,14 @@ const enviarDatos = () => {
       console.log('Alumno agregado:', data);
       Swal.fire('Éxito', 'Alumno agregado correctamente', 'success');
       fetchAlumnos();
-    setDatos(esquema);
+      setDatos(esquema);
     })
     .catch(err => {
       console.error('Error al agregar:', err);
       Swal.fire('Error', 'No se pudo agregar el alumno', 'error');
     });
 };
+
 
 {/* Alta */}
 const guardar = (id) => {
@@ -270,91 +278,134 @@ const guardar = (id) => {
 
 
 {/* Modal Altas */}
-<div className="modal fade" id="modalA" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h1 className="modal-title fs-5" id="exampleModalLabel">Agregar</h1>
-        <button type="button" className="btn-close" data-bs-dismiss="modal" ></button>
-      </div>
-      <div className="modal-body">
-        <form id="alumnoform">
-                           
-                            <div className="modal-body">
-                                <div className="mb-3">
-                                    <label>Numero de Control:</label>
-                                    <input type="text" name="numControl" id="numControl" 
-                                    value={datos.numControl} onChange={handleChange} 
-                                    required className="form-control" />
-                                </div>
-                                <div className="mb-3">
-                                    <label>Nombre:</label>
-                                    <input type="text" name="nombre" id="nombre" 
-                                    value={datos.nombre} onChange={handleChange} required className="form-control" />
-                                </div>
-                                <div className="mb-3">
-                                    <label>Primer Apellido:</label>
-                                    <input type="text" name="primerAp" id="primerAp" value={datos.primerAp} onChange={handleChange}
-                                    required className="form-control" />
-                                </div>
-                                <div className="mb-3">
-                                    <label>Segundo Apellido:</label>
-                                    <input type="text" name="segundoAp" id="segundoAp" value={datos.segundoAp} onChange={handleChange}
-                                    required className="form-control" />
-                                </div>
-                                
-                               <div className="mb-3">
-    <label>Semestre</label>
-    <select name="semestre" id="semestre" className="form-control"
-    value={datos.semestre} onChange={handleChange} required >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-    </select>
-</div>
-                                <div className="mb-3">
-    <label>Carrera</label>
-    <select name="carrera" id="carrera" className="form-control"
-    value={datos.carrera} onChange={handleChange} required>
-        <option value="ISC">ISC</option>
-        <option value="IM">IM</option>
-        <option value="CP">CP</option>
-        <option value="LA">LA</option>
-        <option value="IIA">IIA</option>
-    </select>
-</div>
-								<div className="mb-3">
-                                    <label>Fecha de Nacimiento:</label>
-                                    <input type="date" name="fechaNac" id="fechaNac" value={datos.fechaNac} onChange={handleChange} 
-                                    onClick={(e) => {e.target.showPicker();}}
-                                    required className="form-control" />
-                                    
-                                </div>
-								<div className="mb-3">
-                                    <label>Num. De Telefono</label>
-                                    <input type="text" name="numTel" id="numTel" value={datos.numTel} onChange={handleChange}
-                                    required className="form-control" />
-                                </div>
-                            </div>
-                            
-                        </form>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={() => enviarDatos()}>Agregar</button>
+<form onSubmit={enviarDatos}>
+  <div className="modal fade" id="modalA" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h1 className="modal-title fs-5" id="exampleModalLabel">Agregar</h1>
+          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div className="modal-body">
+          <div className="mb-3">
+            <label>Numero de Control:</label>
+            <input
+              type="text"
+              name="numControl"
+              value={datos.numControl}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Nombre:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={datos.nombre}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Primer Apellido:</label>
+            <input
+              type="text"
+              name="primerAp"
+              value={datos.primerAp}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Segundo Apellido:</label>
+            <input
+              type="text"
+              name="segundoAp"
+              value={datos.segundoAp}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Semestre:</label>
+            <select
+              name="semestre"
+              value={datos.semestre}
+              onChange={handleChange}
+              required
+              className="form-control"
+            >
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i + 1} value={i + 1}>{i + 1}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label>Carrera:</label>
+            <select
+              name="carrera"
+              value={datos.carrera}
+              onChange={handleChange}
+              required
+              className="form-control"
+            >
+              <option value="ISC">ISC</option>
+              <option value="IM">IM</option>
+              <option value="CP">CP</option>
+              <option value="LA">LA</option>
+              <option value="IIA">IIA</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label>Fecha de Nacimiento:</label>
+            <input
+              type="date"
+              name="fechaNac"
+              value={datos.fechaNac}
+              onChange={handleChange}
+              onClick={(e) => e.target.showPicker()}
+              required
+              className="form-control"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label>Num. de Teléfono:</label>
+            <input
+              type="text"
+              name="numTel"
+              value={datos.numTel}
+              onChange={handleChange}
+              required
+              className="form-control"
+            />
+          </div>
+        </div>
+
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+            Cerrar
+          </button>
+          <button type="submit" className="btn btn-success">
+            Agregar
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>
 
 
 {/* Modal Cambios */}
