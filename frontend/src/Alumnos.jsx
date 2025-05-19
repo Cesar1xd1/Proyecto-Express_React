@@ -39,13 +39,14 @@ const cargarAlumno = (alumno) => {
 
 
   
-const handleChange = (e) => {
+const handleChange = (e, setState) => {
   const { name, value } = e.target;
-  setAlumnoSeleccionado(prev => ({
+  setState(prev => ({
     ...prev,
     [name]: value
   }));
 };
+
   
   {/* proxima pagina*/}
   const handleNext = () => {
@@ -139,6 +140,7 @@ const enviarDatos = (e) => {
       Swal.fire('Éxito', 'Alumno agregado correctamente', 'success');
       fetchAlumnos();
       setDatos(esquema);
+      document.getElementById('cerrarA').click();
     })
     .catch(err => {
       console.error('Error al agregar:', err);
@@ -149,11 +151,12 @@ const enviarDatos = (e) => {
 
 {/* Cambios */}
 const guardar = (e, id) => {
-  e.preventDefault();
+  e.preventDefault(); // ⛔ Previene el cierre automático
 
-  if (!e.target.checkValidity()) {
-    e.target.reportValidity();
-    return;
+  const form = e.target.closest('form'); // ⬅️ Ubica el form
+  if (!form.checkValidity()) {
+    form.reportValidity(); // ⬅️ Muestra los errores nativos del navegador
+    return; // ⛔ No continúa si el form no es válido
   }
 
   fetch(`http://localhost:3001/alumnos/${id}`, {
@@ -165,13 +168,15 @@ const guardar = (e, id) => {
   })
     .then(res => res.json())
     .then(data => {
+      console.log('Alumno editado:', data);
       Swal.fire('Éxito', 'Cambios guardados correctamente', 'success');
       fetchAlumnos();
       setDatos(esquema);
-      
+
+      document.getElementById('cerrarEdit').click();
     })
     .catch(err => {
-      console.error('Error al guardar:', err);
+      console.error('Error al editar:', err);
       Swal.fire('Error', 'No se pudo realizar el cambio', 'error');
     });
 };
@@ -304,7 +309,7 @@ const guardar = (e, id) => {
               type="text"
               name="numControl"
               value={datos.numControl}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             />
@@ -316,7 +321,7 @@ const guardar = (e, id) => {
               type="text"
               name="nombre"
               value={datos.nombre}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             />
@@ -328,7 +333,7 @@ const guardar = (e, id) => {
               type="text"
               name="primerAp"
               value={datos.primerAp}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             />
@@ -340,7 +345,7 @@ const guardar = (e, id) => {
               type="text"
               name="segundoAp"
               value={datos.segundoAp}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             />
@@ -351,7 +356,7 @@ const guardar = (e, id) => {
             <select
               name="semestre"
               value={datos.semestre}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             >
@@ -366,7 +371,7 @@ const guardar = (e, id) => {
             <select
               name="carrera"
               value={datos.carrera}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             >
@@ -384,7 +389,7 @@ const guardar = (e, id) => {
               type="date"
               name="fechaNac"
               value={datos.fechaNac}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               onClick={(e) => e.target.showPicker()}
               required
               className="form-control"
@@ -397,7 +402,7 @@ const guardar = (e, id) => {
               type="text"
               name="numTel"
               value={datos.numTel}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, setDatos)}
               required
               className="form-control"
             />
@@ -405,10 +410,10 @@ const guardar = (e, id) => {
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+          <button type="button" className="btn btn-secondary" id='cerrarA' data-bs-dismiss="modal">
             Cerrar
           </button>
-          <button type="submit" className="btn btn-success">
+          <button type="submit"  className="btn btn-success">
             Agregar
           </button>
         </div>
@@ -419,6 +424,7 @@ const guardar = (e, id) => {
 
 
 {/* Modal Cambios */}
+
 <form onSubmit={(e) => guardar(e, alumnoSeleccionado._id)}>
 <div className="modal fade" id="modalC" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
@@ -500,8 +506,8 @@ const guardar = (e, id) => {
                             </div>
       </div>
       <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="submit" className="btn btn-primary" >Guardar</button>
+        <button type="button" className="btn btn-secondary" id='cerrarEdit' data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" className="btn btn-primary"  >Guardar</button>
       </div>
     </div>
   </div>
