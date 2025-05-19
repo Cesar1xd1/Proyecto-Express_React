@@ -27,6 +27,16 @@ connection.once('open', ()=>{
     console.log('Conexion EXITOSA a MongoDB');
 });
 
+//--- modelo de usuario ---
+const usuariosSchema = new mongoose.Schema({
+  tipoUsuario: {type: String, enum: ["Administrador", "Tutor", "Alumno"], required: true},
+  usuario: {type: String, required:true, unique: true},
+  contraña: {type: String, required: true}
+});
+
+module.exports = mongoose.model('Usuario', usuariosSchema);
+
+
 // ---------------- Crear el MODELO de datos ---------------
 const alumnoSchema = new mongoose.Schema({
     numControl : String,
