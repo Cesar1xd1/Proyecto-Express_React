@@ -1,72 +1,95 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-const Register = () => {
+const Usuario = () => {
   const [tipoUsuario, setTipoUsuario] = useState('alumno');
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const enviarDatos = (e) => {
     e.preventDefault();
-    setError('');
-    setMensaje('');
-
-    try {
-      const res = await fetch('http://localhost:3001/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipoUsuario, usuario, contraseña }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setMensaje('Usuario registrado con éxito');
-        setUsuario('');
-        setContraseña('');
-        setTipoUsuario('alumno');
-      } else {
-        setError(data.message || 'Error al registrar usuario');
-      }
-    } catch (err) {
-      setError('Error del servidor');
+    if (!e.target.checkValidity()) {
+      e.target.reportValidity();
+      return;
     }
+
+    const datos = {
+      tipoUsuario,
+      usuario,
+      contraseña
+    };
+
+    fetch('http://localhost:3001/usuario', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos)
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Error en el servidor');
+      return res.json();
+    })
+    .then(data => {
+      console.log('Usuario agregado: ', data);
+      Swal.fire('Éxito', 'Usuario registrado correctamente', 'success');
+      setUsuario('');
+      setContraseña('');
+      setMensaje('Usuario registrado con éxito');
+      setError('');
+    })
+    .catch(err => {
+      console.error('Error al agregar:', err);
+      Swal.fire('Error', 'No se pudo agregar el usuario', 'error');
+      setError('No se pudo registrar el usuario');
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={enviarDatos} className="container mt-4">
       <h2>Registro</h2>
 
-      <label>Tipo de usuario:</label>
-      <select value={tipoUsuario} onChange={e => setTipoUsuario(e.target.value)}>
-        <option value="admin">Administrador</option>
-        <option value="tutor">Tutor</option>
-        <option value="alumno">Alumno</option>
-      </select>
+      <div className="mb-3">
+        <label className="form-label">Tipo de usuario:</label>
+        <select className="form-select" value={tipoUsuario} onChange={e => setTipoUsuario(e.target.value)}>
+          <option value="admin">Administrador</option>
+          <option value="tutor">Tutor</option>
+          <option value="alumno">Alumno</option>
+        </select>
+      </div>
 
-      <label>Usuario:</label>
-      <input
-        type="text"
-        value={usuario}
-        onChange={e => setUsuario(e.target.value)}
-        required
-      />
+      <div className="mb-3">
+        <label className="form-label">Usuario:</label>
+        <input
+          type="text"
+          className="form-control"
+          value={usuario}
+          onChange={e => setUsuario(e.target.value)}
+          required
+        />
+      </div>
 
-      <label>Contraseña:</label>
-      <input
-        type="password"
-        value={contraseña}
-        onChange={e => setContraseña(e.target.value)}
-        required
-      />
+      <div className="mb-3">
+        <label className="form-label">Contraseña:</label>
+        <input
+          type="password"
+          className="form-control"
+          value={contraseña}
+          onChange={e => setContraseña(e.target.value)}
+          required
+        />
+      </div>
 
-      {mensaje && <p style={{ color: 'green' }}>{mensaje}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {mensaje && <p className="text-success">{mensaje}</p>}
+      {error && <p className="text-danger">{error}</p>}
 
-      <button type="submit">Registrar</button>
+      <button type="submit" className="btn btn-primary">Registrar</button>
     </form>
   );
 };
 
-export default Register;
+export default Usuario;

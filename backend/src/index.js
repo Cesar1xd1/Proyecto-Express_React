@@ -32,32 +32,33 @@ connection.once('open', ()=>{
 const usuariosSchema = new mongoose.Schema({
   tipoUsuario: {type: String, enum: ["admin", "tutor", "alumno"], required: true},
   usuario: {type: String, required:true, unique: true},
-  contraña: {type: String, required: true}
+  contraseña: {type: String, required: true}
 });
 
-module.exports = mongoose.model('Usuario', usuariosSchema);
+const Usuario = mongoose.model('Usuario', usuariosSchema);
 
 //--- registro de usuario ---
-app.post('/usuario', async (request, response)=>{
-    const usuario = new Usuario({
-        tipoUsuario : request.body.tipoUsuario,
-        usuario : request.body.usuario,
-        contraseña : request.body.contraseña
-    });
-
+app.post('/usuario', async (request, response) => {
     try {
-      const existente = await Usuario.findOne({usuario});
-      if(existente){
-        return response.status(400).json({message: 'Usuario existente'});
+      const { tipoUsuario, usuario, contraseña } = request.body;
+
+      const existente = await Usuario.findOne({ usuario });
+      if (existente) {
+        return response.status(400).json({ message: 'Usuario existente' });
       }
+
       const hash = await bcrypt.hash(contraseña, 15);
-      const nuevoUsuario = new Usuario({tipoUsuario, usuario, contraseña: hash});
+      const nuevoUsuario = new Usuario({ tipoUsuario, usuario, contraseña: hash });
+
       await nuevoUsuario.save();
-      response.status(201).json({message: 'usuario registrado'});
-    }catch(err){
-      res.status(500).json({error: 'Error al registrar usuario'});
+      response.status(201).json({ message: 'usuario registrado' });
+
+    } catch (err) {
+      console.error('Error al registrar usuario:', err);
+      response.status(500).json({ error: 'Error al registrar usuario' });
     }
 });
+
  
 // --- login ---
 app.post('/login', async(req, res) => {
