@@ -87,7 +87,8 @@ const Usuario = () => {
       {mensaje && <p className="text-success">{mensaje}</p>}
       {error && <p className="text-danger">{error}</p>}
 
-      <button type="submit" className="btn btn-primary">Registrar</button>
+      <button type="submit" className="btn btn-primary me-2">Registrar</button>
+      <a href="/login" class="btn btn-primary">Iniciar Sesion</a>
     </form>
   );
 };

@@ -61,25 +61,37 @@ app.post('/usuario', async (request, response) => {
 
  
 // --- login ---
-app.post('/login', async(req, res) => {
-  const {usuario, contraseña, tipoUsuario} = req.body;
+app.post('/login', async (req, res) => {
+  const { usuario, contraseña, tipoUsuario } = req.body;
 
-  try{
-    const usuario = await Usuario.findOne({ usuario });
+  try {
+    const usuarioEncontrado = await Usuario.findOne({ usuario });
 
-    if(!usuario){
-      return res.status(400).json({ message: 'Usuario incorrecto '});
-    }
-    if(usuario.tipoUsuario !== tipoUsuario){
-      return res.status(403).json({ message: 'Tipo de usuario incorrecto '});
+    if (!usuarioEncontrado) {
+      return res.status(400).json({ message: 'Usuario incorrecto' });
     }
 
-    const match = await bcrypt.compare(contraseña, usuario.contraseña);
-    if(!match) return res.status(401).json({message: 'conttraseña incorrecta'});
-  }catch(err){
-    res.status(500).json({ error: 'error '});
+    if (usuarioEncontrado.tipoUsuario !== tipoUsuario) {
+      return res.status(403).json({ message: 'Tipo de usuario incorrecto' });
+    }
+
+    const match = await bcrypt.compare(contraseña, usuarioEncontrado.contraseña);
+    if (!match) {
+      return res.status(401).json({ message: 'Contraseña incorrecta' });
+    }
+
+    // ✅ Si pasa todas las validaciones
+    res.status(200).json({
+      message: 'Inicio de sesión exitoso',
+      usuario: usuarioEncontrado.usuario,
+      tipoUsuario: usuarioEncontrado.tipoUsuario,
+      // Aquí podrías agregar token JWT en producción
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error del servidor' });
   }
-  
 });
 
 
