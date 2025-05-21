@@ -84,7 +84,7 @@ app.post('/login', async(req, res) => {
 
 // ---------------- Crear el MODELO de datos ---------------
 const alumnoSchema = new mongoose.Schema({
-    numControl : String,
+    numControl : {type: String , unique: true},
     nombre : String,
     primerAp : String,
     segundoAp : String,
