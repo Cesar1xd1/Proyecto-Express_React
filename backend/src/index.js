@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -29,12 +30,56 @@ connection.once('open', ()=>{
 
 //--- modelo de usuario ---
 const usuariosSchema = new mongoose.Schema({
-  tipoUsuario: {type: String, enum: ["Administrador", "Tutor", "Alumno"], required: true},
+  tipoUsuario: {type: String, enum: ["admin", "tutor", "alumno"], required: true},
   usuario: {type: String, required:true, unique: true},
   contraña: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Usuario', usuariosSchema);
+
+//--- registro de usuario ---
+app.post('/usuario', async (request, response)=>{
+    const usuario = new Usuario({
+        tipoUsuario : request.body.tipoUsuario,
+        usuario : request.body.usuario,
+        contraseña : request.body.contraseña
+    });
+
+    try {
+      const existente = await Usuario.findOne({usuario});
+      if(existente){
+        return response.status(400).json({message: 'Usuario existente'});
+      }
+      const hash = await bcrypt.hash(contraseña, 15);
+      const nuevoUsuario = new Usuario({tipoUsuario, usuario, contraseña: hash});
+      await nuevoUsuario.save();
+      response.status(201).json({message: 'usuario registrado'});
+    }catch(err){
+      res.status(500).json({error: 'Error al registrar usuario'});
+    }
+});
+ 
+// --- login ---
+app.post('/login', async(req, res) => {
+  const {usuario, contraseña, tipoUsuario} = req.body;
+
+  try{
+    const usuario = await Usuario.findOne({ usuario });
+
+    if(!usuario){
+      return res.status(400).json({ message: 'Usuario incorrecto '});
+    }
+    if(usuario.tipoUsuario !== tipoUsuario){
+      return res.status(403).json({ message: 'Tipo de usuario incorrecto '});
+    }
+
+    const match = await bcrypt.compare(contraseña, usuario.contraseña);
+    if(!match) return res.status(401).json({message: 'conttraseña incorrecta'});
+  }catch(err){
+    res.status(500).json({ error: 'error '});
+  }
+  
+});
 
 
 // ---------------- Crear el MODELO de datos ---------------
