@@ -221,7 +221,7 @@ const guardar = (e, id) => {
                   <th>Carrera</th>
                   <th>Fecha de nacimiento</th>
                   <th>Num. de Telefono</th>
-                  <th colSpan={2} className='text-center'>Accion</th>
+                  <th colSpan={3} className='text-center'>Accion</th>
                   
                 </tr>
               </thead>
@@ -243,7 +243,7 @@ const guardar = (e, id) => {
                           type="button"
                           className="btn btn-info btn-sm"
                           data-bs-target="#modalC"
-                           data-bs-toggle="modal"
+                          data-bs-toggle="modal"
                           onClick={() => cargarAlumno(row)}
                         >Editar</button>
                         </td>
@@ -254,6 +254,15 @@ const guardar = (e, id) => {
                           onClick={() => eliminarAlumno(row._id)}
                         >Eliminar</button>
                       </td>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-warning btn-sm"
+                          data-bs-target="#modalD"
+                          data-bs-toggle="modal"
+                          onClick={() => cargarAlumno(row)}
+                        >Detalle</button>
+                        </td>
                     </tr>
                   ))
                 ) : (
@@ -513,6 +522,66 @@ const guardar = (e, id) => {
   </div>
 </div>
 </form>
+
+
+<div className="modal fade" id="modalD" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h1 className="modal-title fs-5" id="exampleModalLabel">Detalles</h1>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+                            <div className="modal-body">
+                                <div className="mb-3">
+                                    <label>Numero de Control:</label>
+                                    <br />
+                                    <strong>{alumnoSeleccionado.numControl}</strong>
+                                </div>
+                                <div className="mb-3">
+                                    <label>Nombre:</label>
+                                    <br />
+                                    <strong>{alumnoSeleccionado.nombre}</strong>
+                                </div>
+                                <div className="mb-3">
+                                    <label>Primer Apellido:</label>
+                                    <br />
+                                    <strong>{alumnoSeleccionado.primerAp}</strong>
+                                </div>
+                                <div className="mb-3">
+                                    <label>Segundo Apellido:</label>
+                                    <br />
+                                    <strong>{alumnoSeleccionado.segundoAp}</strong>
+                                </div>
+                                
+                               <div className="mb-3">
+    <label>Semestre</label>
+    <br />
+    <strong>{alumnoSeleccionado.semestre}</strong>
+</div>
+                                <div className="mb-3">
+    <label>Carrera</label>
+    <br />
+    <strong>{alumnoSeleccionado.carrera}</strong>
+</div>
+								<div className="mb-3">
+                                    <label>Fecha de Nacimiento:</label>
+                                  <br />
+                                    <strong>{alumnoSeleccionado.fechaNac}</strong>
+                                </div>
+								<div className="mb-3">
+                                    <label>Num. De Telefono</label>
+                                    <br />
+                                    <strong>{alumnoSeleccionado.numTel}</strong>
+                                </div>
+                            </div>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" id='cerrarEdit' data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     </div>
     </SidebarLayout>
