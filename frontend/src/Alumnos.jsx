@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import SidebarLayout from './SidebarLayout';
 
 
 const Alumnos = () => {
@@ -189,8 +189,8 @@ const guardar = (e, id) => {
 
 
   return (
-
-
+<SidebarLayout>
+   
     <div className="container">
       <h1 className="text-center mb-5 mt-5 text-danger"><b>Servicios Escolares</b></h1>
       <div className="card mb-5">
@@ -515,6 +515,7 @@ const guardar = (e, id) => {
 </form>
 
     </div>
+    </SidebarLayout>
   );
 };
 

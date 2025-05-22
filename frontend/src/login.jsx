@@ -25,7 +25,7 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        navigate('/alumnos');
+        navigate('/dashboard');
       } else {
         setError(data.message || 'Error al iniciar sesión');
       }
