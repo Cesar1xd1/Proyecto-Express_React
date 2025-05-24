@@ -42,9 +42,10 @@ const SidebarLayout = ({ children }) => {
   </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white" href="#">
-              {collapsed ? '👤' : 'Usuarios'}
-            </a>
+            <a className="nav-link text-white d-flex align-items-center" href="/tutores">
+    <i className="bi bi-house text-white me-2"></i>
+    {!collapsed && 'Tutores'}
+  </a>
           </li>
           <li className="nav-item">
             <a className="nav-link text-white" href="#">
