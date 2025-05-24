@@ -50,7 +50,8 @@ const Usuario = () => {
   };
 
   return (
-    <form onSubmit={enviarDatos} className="container mt-4">
+    <div className="container d-flex justify-content-center mt-5">
+      <form onSubmit={enviarDatos} className="p-4 border rounded shadow-sm bg-light" style={{ maxWidth: '400px', width: '100%' }}>
       <h2>Registro</h2>
 
       <div className="mb-3">
@@ -90,6 +91,9 @@ const Usuario = () => {
       <button type="submit" className="btn btn-primary me-2">Registrar</button>
       <a href="/login" class="btn btn-primary">Iniciar Sesion</a>
     </form>
+    </div>
+
+    
   );
 };
 
