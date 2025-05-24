@@ -5,6 +5,7 @@ import Usuario from './Registro';
 import Login from './Login';
 import NotFound from './notfound';
 import SidebarLayout from './SidebarLayout';
+import LandingPage from './LandingPage';
 
 
 
@@ -15,8 +16,9 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<SidebarLayout />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<Usuario/>} />
+          <Route path="/" element={<LandingPage/>} />
         <Route path="/login" element={<Login/>} />
+        <Route path="/registro" element={<Usuario/>} />
         <Route path="/alumnos" element={<Alumnos/>} />
       </Routes>
     </Router>
