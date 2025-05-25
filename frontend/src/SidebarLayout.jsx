@@ -37,19 +37,21 @@ const SidebarLayout = ({ children }) => {
         <ul className="nav flex-column">
           <li className="nav-item">
             <a className="nav-link text-white d-flex align-items-center" href="/alumnos">
-    <i className="bi bi-house text-white me-2"></i>
+    <i className="bi bi-backpack text-white me-2"></i>
     {!collapsed && 'Alumnos'}
   </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white" href="#">
-              {collapsed ? '👤' : 'Usuarios'}
-            </a>
+            <a className="nav-link text-white d-flex align-items-center" href="/tutores">
+    <i className="bi bi-duffle text-white me-2"></i>
+    {!collapsed && 'Tutores'}
+  </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white" href="#">
-              {collapsed ? '⚙️' : 'Ajustes'}
-            </a>
+              <a className="nav-link text-white d-flex align-items-center" href="/grupos">
+    <i className="bi bi-people text-white me-2"></i>
+    {!collapsed && 'Grupos'}
+  </a>
           </li>
         </ul>
       </div>

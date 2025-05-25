@@ -5,9 +5,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import SidebarLayout from './SidebarLayout';
 
 
-const Alumnos = () => {
-  const [alumnos, setAlumnos] = useState([]);
-  const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({
+const Tutores = () => {
+  const [tutores, setTutores] = useState([]);
+  const [tutorSeleccionado, setTutorSeleccionado] = useState({
   numControl: '',
   nombre: '',
   primerAp: '',
@@ -33,8 +33,8 @@ const Alumnos = () => {
   };
 
 const [datos,setDatos] = useState (esquema);
-const cargarAlumno = (alumno) => {
-  setAlumnoSeleccionado(alumno);
+const cargarTutor = (tutor) => {
+  setTutorSeleccionado(tutor);
 };
 
 
@@ -69,10 +69,10 @@ const handleChange = (e, setState) => {
   };
 {/* variables para usar en el dom */}
 const [startPage, endPage] = getPaginationRange();
-const alumnosDT = alumnos.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+const tutoresDT = tutores.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
 {/* Eliminar */}
-const eliminarAlumno = (id) => {
+const eliminarTutor = (id) => {
   Swal.fire({
     title: '¿Estás seguro?',
     text: "Esta acción no se puede deshacer",
@@ -83,39 +83,37 @@ const eliminarAlumno = (id) => {
     confirmButtonText: 'Sí, eliminar'
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(`http://localhost:3001/alumnos/${id}`, {
+      fetch(`http://localhost:3001/tutores/${id}`, {
         method: 'DELETE'
       })
         .then(res => res.json())
         .then(data => {
-          console.log('Alumno eliminado:', data);
-          Swal.fire('Eliminado', 'El alumno ha sido eliminado.', 'success');
-          fetchAlumnos();
-          // Actualiza la lista si es necesario
-          // Por ejemplo, llamando a una función fetchAlumnos()
+          console.log('Tutor eliminado:', data);
+          Swal.fire('Eliminado', 'El tutor ha sido eliminado.', 'success');
+          fetchTutores();
         })
         .catch(err => {
           console.error('Error al eliminar:', err);
-          Swal.fire('Error', 'No se pudo eliminar el alumno', 'error');
+          Swal.fire('Error', 'No se pudo eliminar el tutor', 'error');
         });
     }
   });
 };
 
 {/* Cargar/actualizar registro */}
-  const fetchAlumnos = () => {
-    fetch('http://localhost:3001/alumnos/')
+  const fetchTutores = () => {
+    fetch('http://localhost:3001/tutores/')
       .then(res => res.json())
       .then(data => {
-        setAlumnos(data);
+        setTutores(data);
         setTotalPages(Math.ceil(data.length / rowsPerPage)); // Establece el número total de páginas
       })
-      .catch(err => console.error('Error al obtener alumnos:', err));
+      .catch(err => console.error('Error al obtener tutores:', err));
   };
 
 {/* registros Cargados */}  
 useEffect(() => {
- fetchAlumnos();
+ fetchTutores();
 }, []);
 
 {/* Alta */}
@@ -127,7 +125,7 @@ const enviarDatos = (e) => {
     return;
   }
 
-  fetch('http://localhost:3001/alumnos', {
+  fetch('http://localhost:3001/tutores', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -136,15 +134,15 @@ const enviarDatos = (e) => {
   })
     .then(res => res.json())
     .then(data => {
-      console.log('Alumno agregado:', data);
-      Swal.fire('Éxito', 'Alumno agregado correctamente', 'success');
-      fetchAlumnos();
+      console.log('Tutor agregado:', data);
+      Swal.fire('Éxito', 'Tutor agregado correctamente', 'success');
+      fetchTutores();
       setDatos(esquema);
       document.getElementById('cerrarA').click();
     })
     .catch(err => {
       console.error('Error al agregar:', err);
-      Swal.fire('Error', 'No se pudo agregar el alumno', 'error');
+      Swal.fire('Error', 'No se pudo agregar el tutor', 'error');
     });
 };
 
@@ -159,18 +157,18 @@ const guardar = (e, id) => {
     return; // ⛔ No continúa si el form no es válido
   }
 
-  fetch(`http://localhost:3001/alumnos/${id}`, {
+  fetch(`http://localhost:3001/tutores/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(alumnoSeleccionado)
+    body: JSON.stringify(tutorSeleccionado)
   })
     .then(res => res.json())
     .then(data => {
-      console.log('Alumno editado:', data);
+      console.log('Tutor editado:', data);
       Swal.fire('Éxito', 'Cambios guardados correctamente', 'success');
-      fetchAlumnos();
+      fetchTutores();
       setDatos(esquema);
 
       document.getElementById('cerrarEdit').click();
@@ -181,13 +179,6 @@ const guardar = (e, id) => {
     });
 };
 
-
-
-
-
-
-
-
   return (
 <SidebarLayout>
    
@@ -196,7 +187,7 @@ const guardar = (e, id) => {
       <div className="card mb-5">
         <div className="card-header">
           <div className="row">
-            <h3 className="col col-6">Alumnos</h3>
+            <h3 className="col col-6">Tutores</h3>
             <div className="col col-6">
               <button
                 type="button"
@@ -227,8 +218,8 @@ const guardar = (e, id) => {
               </thead>
               <tbody>
                 {/* Cargar registros de forma dinamica */}
-                {alumnosDT.length > 0 ? (
-                  alumnosDT.map((row) => (
+                {tutoresDT.length > 0 ? (
+                  tutoresDT.map((row) => (
                     <tr key={row._id}>
                       <td>{row.numControl}</td>
                       <td>{row.nombre}</td>
@@ -244,14 +235,14 @@ const guardar = (e, id) => {
                           className="btn btn-info btn-sm"
                           data-bs-target="#modalC"
                           data-bs-toggle="modal"
-                          onClick={() => cargarAlumno(row)}
+                          onClick={() => cargarTutor(row)}
                         >Editar</button>
                         </td>
                         <td>
                         <button
                           type="button"
                           className="btn btn-danger btn-sm"
-                          onClick={() => eliminarAlumno(row._id)}
+                          onClick={() => eliminarTutor(row._id)}
                         >Eliminar</button>
                       </td>
                       <td>
@@ -260,7 +251,7 @@ const guardar = (e, id) => {
                           className="btn btn-warning btn-sm"
                           data-bs-target="#modalD"
                           data-bs-toggle="modal"
-                          onClick={() => cargarAlumno(row)}
+                          onClick={() => cargarTutor(row)}
                         >Detalle</button>
                         </td>
                     </tr>
@@ -434,7 +425,7 @@ const guardar = (e, id) => {
 
 {/* Modal Cambios */}
 
-<form onSubmit={(e) => guardar(e, alumnoSeleccionado._id)}>
+<form onSubmit={(e) => guardar(e, tutorSeleccionado._id)}>
 <div className="modal fade" id="modalC" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
     <div className="modal-content">
@@ -447,7 +438,7 @@ const guardar = (e, id) => {
                                 <div className="mb-3">
                                     <label>Numero de Control:</label>
                                     <input type="text" name="numControl" id="numControl" 
-                                    value={alumnoSeleccionado.numControl} 
+                                    value={tutorSeleccionado.numControl} 
                                     
                                     readOnly
                                     required className="form-control" />
@@ -455,24 +446,24 @@ const guardar = (e, id) => {
                                 <div className="mb-3">
                                     <label>Nombre:</label>
                                     <input type="text" name="nombre" id="nombre" 
-                                    value={alumnoSeleccionado.nombre} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, nombre: e.target.value })}
+                                    value={tutorSeleccionado.nombre} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, nombre: e.target.value })}
                                      required className="form-control" />
                                 </div>
                                 <div className="mb-3">
                                     <label>Primer Apellido:</label>
-                                    <input type="text" name="primerAp" id="primerAp" value={alumnoSeleccionado.primerAp} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, primerAp: e.target.value })}
+                                    <input type="text" name="primerAp" id="primerAp" value={tutorSeleccionado.primerAp} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, primerAp: e.target.value })}
                                     required className="form-control" />
                                 </div>
                                 <div className="mb-3">
                                     <label>Segundo Apellido:</label>
-                                    <input type="text" name="segundoAp" id="segundoAp" value={alumnoSeleccionado.segundoAp} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, segundoAp: e.target.value })}
+                                    <input type="text" name="segundoAp" id="segundoAp" value={tutorSeleccionado.segundoAp} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, segundoAp: e.target.value })}
                                     required className="form-control" />
                                 </div>
                                 
                                <div className="mb-3">
     <label>Semestre</label>
     <select name="semestre" id="semestre" className="form-control"
-    value={alumnoSeleccionado.semestre} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, semestre: e.target.value })} required >
+    value={tutorSeleccionado.semestre} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, semestre: e.target.value })} required >
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -490,7 +481,7 @@ const guardar = (e, id) => {
                                 <div className="mb-3">
     <label>Carrera</label>
     <select name="carrera" id="carrera" className="form-control"
-    value={alumnoSeleccionado.carrera} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, carrera: e.target.value })} required>
+    value={tutorSeleccionado.carrera} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, carrera: e.target.value })} required>
         <option value="ISC">ISC</option>
         <option value="IM">IM</option>
         <option value="CP">CP</option>
@@ -500,7 +491,7 @@ const guardar = (e, id) => {
 </div>
 								<div className="mb-3">
                                     <label>Fecha de Nacimiento:</label>
-                                    <input type="date" name="fechaNac2" id="fechaNac2" value={alumnoSeleccionado.fechaNac} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, fechaNac: e.target.value })} 
+                                    <input type="date" name="fechaNac2" id="fechaNac2" value={tutorSeleccionado.fechaNac} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, fechaNac: e.target.value })} 
                                     onClick={(e) => {e.target.showPicker();}}
                                     required className="form-control" />
                                     <script>
@@ -509,7 +500,7 @@ const guardar = (e, id) => {
                                 </div>
 								<div className="mb-3">
                                     <label>Num. De Telefono</label>
-                                    <input type="text" name="numTel" id="numTel" value={alumnoSeleccionado.numTel} onChange={(e) => setAlumnoSeleccionado({ ...alumnoSeleccionado, numTel: e.target.value })}
+                                    <input type="text" name="numTel" id="numTel" value={tutorSeleccionado.numTel} onChange={(e) => setTutorSeleccionado({ ...tutorSeleccionado, numTel: e.target.value })}
                                     required className="form-control" />
                                 </div>
                             </div>
@@ -536,43 +527,43 @@ const guardar = (e, id) => {
                                 <div className="mb-3">
                                     <label>Numero de Control:</label>
                                     <br />
-                                    <strong>{alumnoSeleccionado.numControl}</strong>
+                                    <strong>{tutorSeleccionado.numControl}</strong>
                                 </div>
                                 <div className="mb-3">
                                     <label>Nombre:</label>
                                     <br />
-                                    <strong>{alumnoSeleccionado.nombre}</strong>
+                                    <strong>{tutorSeleccionado.nombre}</strong>
                                 </div>
                                 <div className="mb-3">
                                     <label>Primer Apellido:</label>
                                     <br />
-                                    <strong>{alumnoSeleccionado.primerAp}</strong>
+                                    <strong>{tutorSeleccionado.primerAp}</strong>
                                 </div>
                                 <div className="mb-3">
                                     <label>Segundo Apellido:</label>
                                     <br />
-                                    <strong>{alumnoSeleccionado.segundoAp}</strong>
+                                    <strong>{tutorSeleccionado.segundoAp}</strong>
                                 </div>
                                 
                                <div className="mb-3">
     <label>Semestre</label>
     <br />
-    <strong>{alumnoSeleccionado.semestre}</strong>
+    <strong>{tutorSeleccionado.semestre}</strong>
 </div>
                                 <div className="mb-3">
     <label>Carrera</label>
     <br />
-    <strong>{alumnoSeleccionado.carrera}</strong>
+    <strong>{tutorSeleccionado.carrera}</strong>
 </div>
 								<div className="mb-3">
                                     <label>Fecha de Nacimiento:</label>
                                   <br />
-                                    <strong>{alumnoSeleccionado.fechaNac}</strong>
+                                    <strong>{tutorSeleccionado.fechaNac}</strong>
                                 </div>
 								<div className="mb-3">
                                     <label>Num. De Telefono</label>
                                     <br />
-                                    <strong>{alumnoSeleccionado.numTel}</strong>
+                                    <strong>{tutorSeleccionado.numTel}</strong>
                                 </div>
                             </div>
       </div>
@@ -589,4 +580,4 @@ const guardar = (e, id) => {
 };
 
 
-export default Alumnos;
+export default Tutores;

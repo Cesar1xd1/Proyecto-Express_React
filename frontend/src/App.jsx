@@ -6,7 +6,6 @@ import Login from './Login';
 import NotFound from './notfound';
 import SidebarLayout from './SidebarLayout';
 import LandingPage from './LandingPage';
-import Menu from './Menu';
 
 
 
@@ -22,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/registro" element={<Usuario/>} />
         <Route path="/alumnos" element={<Alumnos/>} />
+        <Route path="/tutores" element={<Tutores />} />
+        <Route path="/grupos" element={<Grupos />} />
       </Routes>
     </Router>
     

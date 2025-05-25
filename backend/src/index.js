@@ -173,6 +173,110 @@ app.get('/alumnos/:id', async (request, response) => {
     response.status(200).json(alumno);
 });
 
+//-----Filtrado por semestre y carrera
+app.get('/alumnos/:semestre/:carrera', async (request, response) => {
+  const { semestre, carrera } = request.params;
+
+  try {
+    const alumnos = await Alumno.find({ semestre, carrera });
+    response.status(200).json(alumnos);
+  } catch (error) {
+    response.status(500).json({ error: 'Error al buscar los alumnos' });
+  }
+});
+
+{/* tutores */}
+const tutorSchema = new mongoose.Schema({
+    numControl : {type: String , unique: true},
+    nombre : String,
+    primerAp : String,
+    segundoAp : String,
+    semestre : { type: Number, min: 1, max: 12 },
+    carrera : String,
+    fechaNac : String,
+    numTel : String
+});
+
+const Tutor = mongoose.model('Tutor', tutorSchema);
+
+//==================== RUTAS =============================
+//Ruta principal index
+
+//---- Altas
+app.post('/tutores', async (request, response)=>{
+    const tutor = new Tutor({
+        numControl : request.body.numControl,
+        nombre : request.body.nombre,
+        primerAp : request.body.primerAp,
+        segundoAp : request.body.segundoAp,
+        semestre : request.body.semestre,
+        carrera : request.body.carrera,
+        fechaNac : request.body.fechaNac,
+        numTel : request.body.numTel
+    });
+    const nuevoTutor = await tutor.save();
+    response.status(201).json({exito:true});
+});
+
+//-----BAJAS
+app.delete('/tutores/:id', async (request, response) => {
+    const tutorId = request.params.id;
+    // Fetch the user from the database
+    const tutor = await Tutor.findById(tutorId);
+    await tutor.deleteOne();
+    response.status(200).json({ message : 'Registro ELIMINADO' });
+});
+
+//-----CAMBIOS
+app.put('/tutores/:id', async (request, response) => {
+    const tutorId = request.params.id;
+    // Fetch the user from the database
+    const tutor = await Tutor.findById(tutorId);
+    Object.assign(tutor, {
+    nombre: request.body.nombre,
+    primerAp: request.body.primerAp,
+    segundoAp: request.body.segundoAp,
+    semestre: request.body.semestre,
+    carrera: request.body.carrera,
+    fechaNac: request.body.fechaNac,
+    numTel: request.body.numTel
+});
+
+    
+    const updatedItem = await tutor.save();
+    response.status(200).json(updatedItem);
+});
+
+//-----CONSULTAS
+app.get('/tutores', async (req, res) => {
+  try {
+    const tutores = await Tutor.find();
+    res.json(tutores);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//----Consulta para encontrar solo 1
+app.get('/tutores/:id', async (request, response) => {
+    const tutor = await Tutor.findById(request.params.id);
+    response.status(200).json(tutor);
+});
+
+// Ruta para obtener el tutor del grupo
+app.get('/tutor/:semestre/:carrera', async (req, res) => {
+  const { semestre, carrera } = req.params;
+  try {
+    const tutor = await Tutor.findOne({ semestre, carrera });
+    if (!tutor) {
+      return res.status(404).json({ message: 'Tutor no encontrado' });
+    }
+    res.status(200).json(tutor);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener tutor', error });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
