@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Menu from './Menu';
 
 const Login = () => {
   const [usuario, setUsuario] = useState('');
@@ -35,6 +36,7 @@ const Login = () => {
   };
 
   return (
+    <Menu>
     <div className="container d-flex justify-content-center mt-5">
       <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm bg-light" style={{ maxWidth: '400px', width: '100%' }}>
         <h2 className="mb-4 text-center">Iniciar Sesión</h2>
@@ -83,6 +85,7 @@ const Login = () => {
         </div>
       </form>
     </div>
+    </Menu>
   );
 };
 

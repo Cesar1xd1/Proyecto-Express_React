@@ -1,19 +1,11 @@
 import React from 'react';
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
+import Menu from './Menu';
 
 const LandingPage = () => {
   return (
+    <Menu>
     <div>
-      <Navbar bg="light" expand="lg" className="shadow-sm">
-        <Container>
-          <Navbar.Brand href="#">Tutorias TEC</Navbar.Brand>
-          <Nav className="ms-auto">
-            <a href="/login" class="btn btn-primary me-2">Iniciar Sesion</a>
-            <a href="/registro" class="btn btn-primary me-2">Registrarse</a>
-
-          </Nav>
-        </Container>
-      </Navbar>
       <div className="text-center py-5 ">
         <Container>
           <h1 className="display-4 fw-bold">Bienvenido a la página de tutorias</h1>
@@ -26,6 +18,7 @@ const LandingPage = () => {
         </Container>
       </div>
     </div>
+    </Menu>
   );
 };
 

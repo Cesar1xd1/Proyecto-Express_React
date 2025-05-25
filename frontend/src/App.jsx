@@ -6,6 +6,7 @@ import Login from './Login';
 import NotFound from './notfound';
 import SidebarLayout from './SidebarLayout';
 import LandingPage from './LandingPage';
+import Menu from './Menu';
 
 
 
@@ -15,6 +16,7 @@ function App() {
      <Router>
       <Routes>
         <Route path="/dashboard" element={<SidebarLayout />} />
+        <Route path='/menu' element={<Menu/>}/>
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<LandingPage/>} />
         <Route path="/login" element={<Login/>} />

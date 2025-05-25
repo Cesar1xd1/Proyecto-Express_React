@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Menu from './Menu';
 
 const Usuario = () => {
   const [tipoUsuario, setTipoUsuario] = useState('alumno');
@@ -50,9 +51,10 @@ const Usuario = () => {
   };
 
   return (
+<Menu>
     <div className="container d-flex justify-content-center mt-5">
       <form onSubmit={enviarDatos} className="p-4 border rounded shadow-sm bg-light" style={{ maxWidth: '400px', width: '100%' }}>
-      <h2>Registro</h2>
+      <h2 className="mb-4 text-center">Registrar Usuario</h2>
 
       <div className="mb-3">
         <label className="form-label">Tipo de usuario:</label>
@@ -84,15 +86,10 @@ const Usuario = () => {
           required
         />
       </div>
-
-      {mensaje && <p className="text-success">{mensaje}</p>}
-      {error && <p className="text-danger">{error}</p>}
-
       <button type="submit" className="btn btn-primary me-2">Registrar</button>
-      <a href="/login" class="btn btn-primary">Iniciar Sesion</a>
     </form>
     </div>
-
+</Menu>
     
   );
 };
