@@ -7,6 +7,7 @@ import NotFound from './notfound';
 import SidebarLayout from './SidebarLayout';
 import LandingPage from './LandingPage';
 import Tutores from './Tutores';
+import Grupos from './Grupos';
 
 
 
@@ -21,7 +22,8 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/registro" element={<Usuario/>} />
         <Route path="/alumnos" element={<Alumnos/>} />
-        <Route path="/tutores" element={<Tutores/>} />
+        <Route path="/tutores" element={<Tutores />} />
+        <Route path="/grupos" element={<Grupos />} />
       </Routes>
     </Router>
     

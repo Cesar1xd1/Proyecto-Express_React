@@ -173,6 +173,18 @@ app.get('/alumnos/:id', async (request, response) => {
     response.status(200).json(alumno);
 });
 
+//-----Filtrado por semestre y carrera
+app.get('/alumnos/:semestre/:carrera', async (request, response) => {
+  const { semestre, carrera } = request.params;
+
+  try {
+    const alumnos = await Alumno.find({ semestre, carrera });
+    response.status(200).json(alumnos);
+  } catch (error) {
+    response.status(500).json({ error: 'Error al buscar los alumnos' });
+  }
+});
+
 {/* tutores */}
 const tutorSchema = new mongoose.Schema({
     numControl : {type: String , unique: true},
@@ -217,7 +229,7 @@ app.delete('/tutores/:id', async (request, response) => {
 
 //-----CAMBIOS
 app.put('/tutores/:id', async (request, response) => {
-    const tutoresId = request.params.id;
+    const tutorId = request.params.id;
     // Fetch the user from the database
     const tutor = await Tutor.findById(tutorId);
     Object.assign(tutor, {
@@ -251,6 +263,19 @@ app.get('/tutores/:id', async (request, response) => {
     response.status(200).json(tutor);
 });
 
+// Ruta para obtener el tutor del grupo
+app.get('/tutor/:semestre/:carrera', async (req, res) => {
+  const { semestre, carrera } = req.params;
+  try {
+    const tutor = await Tutor.findOne({ semestre, carrera });
+    if (!tutor) {
+      return res.status(404).json({ message: 'Tutor no encontrado' });
+    }
+    res.status(200).json(tutor);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener tutor', error });
+  }
+});
 
 
 app.listen(PORT, () => {
