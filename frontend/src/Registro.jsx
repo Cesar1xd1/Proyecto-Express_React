@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Menu from "./Menu";
 
 const Usuario = () => {
+  const URL = 'https://proyecto-express-react-b.onrender.com';
   const [tipoUsuario, setTipoUsuario] = useState("alumno");
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
@@ -24,7 +25,7 @@ const Usuario = () => {
       contraseña,
     };
 
-    fetch("http://localhost:3001/usuario", {
+    fetch(`${URL}/usuario`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
