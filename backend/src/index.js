@@ -79,13 +79,10 @@ app.post('/login', async (req, res) => {
     if (!match) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
-
-    // ✅ Si pasa todas las validaciones
     res.status(200).json({
       message: 'Inicio de sesión exitoso',
       usuario: usuarioEncontrado.usuario,
       tipoUsuario: usuarioEncontrado.tipoUsuario,
-      // Aquí podrías agregar token JWT en producción
     });
 
   } catch (err) {
@@ -109,9 +106,6 @@ const alumnoSchema = new mongoose.Schema({
 
 const Alumno = mongoose.model('Alumno', alumnoSchema);
 
-//==================== RUTAS =============================
-//Ruta principal index
-
 //---- Altas
 app.post('/alumnos', async (request, response)=>{
     const alumno = new Alumno({
@@ -124,6 +118,12 @@ app.post('/alumnos', async (request, response)=>{
         fechaNac : request.body.fechaNac,
         numTel : request.body.numTel
     });
+
+    const existente = await Alumno.findOne({ numControl });
+      if (existente) {
+        return response.status(400).json({ message: 'Numero de control existente' });
+      }
+
     const nuevoAlumno = await alumno.save();
     response.status(201).json({exito:true});
 });
@@ -199,9 +199,6 @@ const tutorSchema = new mongoose.Schema({
 
 const Tutor = mongoose.model('Tutor', tutorSchema);
 
-//==================== RUTAS =============================
-//Ruta principal index
-
 //---- Altas
 app.post('/tutores', async (request, response)=>{
     const tutor = new Tutor({
@@ -214,6 +211,11 @@ app.post('/tutores', async (request, response)=>{
         fechaNac : request.body.fechaNac,
         numTel : request.body.numTel
     });
+
+    const existente = await Tutor.findOne({ numControl });
+      if (existente) {
+        return response.status(400).json({ message: 'Numero de control existente' });
+      }
     const nuevoTutor = await tutor.save();
     response.status(201).json({exito:true});
 });
