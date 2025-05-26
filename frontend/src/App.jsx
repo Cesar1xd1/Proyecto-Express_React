@@ -8,7 +8,7 @@ import SidebarLayout from './SidebarLayout';
 import LandingPage from './LandingPage';
 import Menu from './Menu';
 import Grupos from './Grupos';
-import Tutores from './Tutores'
+import Tutores from './Tutores';
 
 
 function App() {
