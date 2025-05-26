@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Menu from "./Menu";
-import ReCAPTCHA from "react-google-recaptcha";
 
 const Usuario = () => {
   const [tipoUsuario, setTipoUsuario] = useState("alumno");
@@ -11,21 +10,11 @@ const Usuario = () => {
   const [contraseña, setContraseña] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
-  const [captchaValido, setCaptchaValido] = useState(false);
 
   const enviarDatos = (e) => {
     e.preventDefault();
     if (!e.target.checkValidity()) {
       e.target.reportValidity();
-      return;
-    }
-
-    if (captchaValido) {
-      Swal.fire(
-        "Verificacion",
-        "Por favor verifica que no eres un robot",
-        "warning"
-      );
       return;
     }
 
@@ -115,13 +104,6 @@ const Usuario = () => {
               required
             />
           </div>
-
-          <ReCAPTCHA 
-            sitekey="6LcaR0krAAAAAPu5Ld9BkJCLhQ_hX-oJLy467LTc"
-            onChange={() => setCaptchaValido(true)}
-            onExpired={() => setCaptchaValido(false)}
-            className="mb-3"
-          />
 
           <button type="submit" className="btn btn-primary me-2">
             Registrar
