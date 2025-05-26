@@ -13,9 +13,6 @@ app.get('/api/saludo', (req, res) => {
   res.json({ mensaje: 'Hola desde Express xd xd!' });
 });
 
-
-
-
 app.use(express.static(__dirname));
 
 mongoose.connect('mongodb+srv://proyectotuto25:LUkjcAJeiUGv87rQ@cluster0.bqpjzcp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
@@ -140,7 +137,6 @@ app.delete('/alumnos/:id', async (request, response) => {
 //-----CAMBIOS
 app.put('/alumnos/:id', async (request, response) => {
     const alumnoId = request.params.id;
-    // Fetch the user from the database
     const alumno = await Alumno.findById(alumnoId);
     Object.assign(alumno, {
     nombre: request.body.nombre,
@@ -223,7 +219,6 @@ app.post('/tutores', async (request, response)=>{
 //-----BAJAS
 app.delete('/tutores/:id', async (request, response) => {
     const tutorId = request.params.id;
-    // Fetch the user from the database
     const tutor = await Tutor.findById(tutorId);
     await tutor.deleteOne();
     response.status(200).json({ message : 'Registro ELIMINADO' });
@@ -232,7 +227,6 @@ app.delete('/tutores/:id', async (request, response) => {
 //-----CAMBIOS
 app.put('/tutores/:id', async (request, response) => {
     const tutorId = request.params.id;
-    // Fetch the user from the database
     const tutor = await Tutor.findById(tutorId);
     Object.assign(tutor, {
     nombre: request.body.nombre,
