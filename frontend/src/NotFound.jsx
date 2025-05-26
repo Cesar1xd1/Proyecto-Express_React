@@ -1,4 +1,3 @@
-// src/pages/NotFound.jsx
 export default function NotFound() {
   return (
     <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-light text-center">
