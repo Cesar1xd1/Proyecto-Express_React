@@ -6,6 +6,9 @@ import Login from './Login';
 import NotFound from './notfound';
 import SidebarLayout from './SidebarLayout';
 import LandingPage from './LandingPage';
+import Menu from './Menu';
+import Tutores from './Tutores'
+import Grupos from './Grupos'
 
 
 
