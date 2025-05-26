@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Alumnos from './Alumnos';
 import Usuario from './Registro';
 import Login from './Login';
@@ -13,6 +13,12 @@ import RutaPrivada from './RutaPrivada';
 
 
 function App() {
+  const [tipoUsuario, setTipoUsuario] = useState('');
+
+  useEffect(() => {
+    const usuarioGuardado = JSON.parse(localStorage.getItem('usuario'));
+    setTipoUsuario(usuarioGuardado?.tipoUsuario || '');
+  }, []);
   return (
     
      <Router>
@@ -32,11 +38,19 @@ function App() {
             </RutaPrivada>
           }
         />
+
         <Route
             path="/alumnos"
             element={
               <RutaPrivada>
-                <Alumnos />
+                {['admin', 'tutor'].includes(tipoUsuario)? (
+                  <SidebarLayout>
+                    <Alumnos/>
+                  </SidebarLayout>
+                ): (
+                  <Navigate to="/dashboard"/>
+                )
+              }
               </RutaPrivada>
             }
           />
@@ -44,8 +58,15 @@ function App() {
           path="/tutores"
           element={
             <RutaPrivada>
-              <Tutores />
-            </RutaPrivada>
+                {tipoUsuario === 'admin' ? (
+                  <SidebarLayout>
+                    <Tutores/>
+                  </SidebarLayout>
+                ): (
+                  <Navigate to="/dashboard"/>
+                )
+              }
+              </RutaPrivada>
           }
         />
         <Route

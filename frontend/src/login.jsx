@@ -25,7 +25,7 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+        localStorage.setItem('usuario', JSON.stringify({usuario, tipoUsuario}));
         navigate('/dashboard');
       } else {
         setError(data.message || 'Error al iniciar sesión');
