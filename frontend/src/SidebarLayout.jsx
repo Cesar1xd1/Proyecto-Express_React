@@ -2,13 +2,20 @@
 import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const SidebarLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
+  };
+
+  const cerrarSesion = () => {
+    localStorage.removeItem('usuario');
+    navigate('/login');
   };
 
   return (
@@ -54,6 +61,10 @@ const SidebarLayout = ({ children }) => {
   </a>
           </li>
         </ul>
+
+        <Button onClick={cerrarSesion} className="btn btn-outline-light w-100 mt-4">
+          <i className="bi bi-box-arrow-right me-2"></i> {!collapsed && 'Cerrar sesión'}
+        </Button>
       </div>
 
       {/* Contenido */}

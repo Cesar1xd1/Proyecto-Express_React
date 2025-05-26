@@ -9,8 +9,7 @@ const Login = () => {
   const [contraseña, setContraseña] = useState('');
   const [tipoUsuario, setTipoUsuario] = useState('alumno');
   const [error, setError] = useState('');
-
-  const navigate = useNavigate(); // 👉 para redirigir
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,6 +25,7 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
+        localStorage.setItem('usuario', JSON.stringify(data.usuario));
         navigate('/dashboard');
       } else {
         setError(data.message || 'Error al iniciar sesión');
@@ -43,11 +43,7 @@ const Login = () => {
 
         <div className="mb-3">
           <label className="form-label">Tipo de usuario:</label>
-          <select
-            value={tipoUsuario}
-            onChange={e => setTipoUsuario(e.target.value)}
-            className="form-select"
-          >
+          <select value={tipoUsuario} onChange={e => setTipoUsuario(e.target.value)} className="form-select">
             <option value="admin">Administrador</option>
             <option value="tutor">Tutor</option>
             <option value="alumno">Alumno</option>
@@ -56,24 +52,12 @@ const Login = () => {
 
         <div className="mb-3">
           <label className="form-label">Usuario:</label>
-          <input
-            type="text"
-            value={usuario}
-            onChange={e => setUsuario(e.target.value)}
-            required
-            className="form-control"
-          />
+          <input type="text" value={usuario} onChange={e => setUsuario(e.target.value)} required className="form-control"/>
         </div>
 
         <div className="mb-3">
           <label className="form-label">Contraseña:</label>
-          <input
-            type="password"
-            value={contraseña}
-            onChange={e => setContraseña(e.target.value)}
-            required
-            className="form-control"
-          />
+          <input type="password" value={contraseña} onChange={e => setContraseña(e.target.value)} required className="form-control"/>
         </div>
 
         {error && <div className="alert alert-danger">{error}</div>}
