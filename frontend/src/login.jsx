@@ -25,9 +25,9 @@ const Login = () => {
         body: JSON.stringify({ usuario, contraseña, tipoUsuario }),
       });
 
-      if (captchaValido) {
+      if (!captchaValido) {
         Swal.fire(
-          "Verificacion",
+          "Verificacion requerida",
           "Por favor verifica que no eres un robot",
           "warning"
         );
