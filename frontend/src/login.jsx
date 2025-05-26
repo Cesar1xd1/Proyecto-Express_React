@@ -6,6 +6,7 @@ import Menu from "./Menu";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
+  const URL = 'https://proyecto-express-react-b.onrender.com';
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [tipoUsuario, setTipoUsuario] = useState("alumno");
@@ -27,7 +28,7 @@ const Login = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3001/login", {
+      const res = await fetch(`${URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ usuario, contraseña, tipoUsuario }),

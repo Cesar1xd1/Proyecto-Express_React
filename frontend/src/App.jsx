@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Alumnos from './Alumnos';
 import Usuario from './Registro';
-import Login from './Login';
+import Login from './login';
 import NotFound from './notfound';
 import SidebarLayout from './SidebarLayout';
 import LandingPage from './LandingPage';

@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import SidebarLayout from "./SidebarLayout";
 
 const Alumnos = () => {
+  const URL = 'https://proyecto-express-react-b.onrender.com';
   const [alumnos, setAlumnos] = useState([]);
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({
     numControl: "",
@@ -94,7 +95,7 @@ const Alumnos = () => {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3001/alumnos/${id}`, {
+        fetch(`${URL}/alumnos/${id}`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -117,7 +118,7 @@ const Alumnos = () => {
     /* Cargar/actualizar registro */
   }
   const fetchAlumnos = () => {
-    fetch("http://localhost:3001/alumnos/")
+    fetch(`${URL}/alumnos`)
       .then((res) => res.json())
       .then((data) => {
         setAlumnos(data);
@@ -144,7 +145,7 @@ const Alumnos = () => {
       return;
     }
 
-    fetch("http://localhost:3001/alumnos", {
+    fetch(`${URL}/alumnos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +178,7 @@ const Alumnos = () => {
       return; // No continúa si el form no es válido
     }
 
-    fetch(`http://localhost:3001/alumnos/${id}`, {
+    fetch(`${URL}/alumnos/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

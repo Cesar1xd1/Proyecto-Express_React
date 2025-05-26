@@ -3,6 +3,7 @@ import SidebarLayout from './SidebarLayout';
 import { useNavigate } from 'react-router-dom';
 
 const Grupos = () => {
+  const URL = 'https://proyecto-express-react-b.onrender.com';
   const [alumnos, setAlumnos] = useState([]);
   const [semestreFiltro, setSemestreFiltro] = useState('1');
   const [carreraFiltro, setCarreraFiltro] = useState('ISC');
@@ -17,7 +18,7 @@ const Grupos = () => {
     setBusquedaHecha(false); // Reinicia la bandera al iniciar búsqueda
 
     // Obtener alumnos
-    fetch(`http://localhost:3001/alumnos/${semestreFiltro}/${carreraFiltro}`)
+    fetch(`${URL}/alumnos/${semestreFiltro}/${carreraFiltro}`)
       .then(res => {
         if (!res.ok) throw new Error('Error al obtener alumnos');
         return res.json();
@@ -30,7 +31,7 @@ const Grupos = () => {
       .catch(err => console.error('Error al obtener alumnos:', err));
 
     // Obtener tutor
-    fetch(`http://localhost:3001/tutor/${semestreFiltro}/${carreraFiltro}`)
+    fetch(`${URL}/tutor/${semestreFiltro}/${carreraFiltro}`)
       .then(res => {
         if (!res.ok) throw new Error('Error al obtener tutor');
         return res.json();
