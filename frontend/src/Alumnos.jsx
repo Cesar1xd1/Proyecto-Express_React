@@ -548,7 +548,7 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            nombre: e.target.value,
+                            nombre: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
                           })
                         }
                         required
@@ -565,7 +565,7 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            primerAp: e.target.value,
+                            primerAp: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
                           })
                         }
                         required
@@ -582,7 +582,7 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            segundoAp: e.target.value,
+                            segundoAp: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
                           })
                         }
                         required
@@ -672,7 +672,7 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            numTel: e.target.value,
+                            numTel: e.target.value.replace(/\D/g, ''),
                           })
                         }
                         required
