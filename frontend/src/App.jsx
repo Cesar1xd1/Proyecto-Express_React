@@ -9,6 +9,7 @@ import LandingPage from './LandingPage';
 import Menu from './Menu';
 import Grupos from './Grupos';
 import Tutores from './Tutores';
+import RutaPrivada from './RutaPrivada';
 
 
 function App() {
@@ -16,15 +17,45 @@ function App() {
     
      <Router>
       <Routes>
-        <Route path="/dashboard" element={<SidebarLayout />} />
-        <Route path='/menu' element={<Menu/>}/>
-        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<LandingPage/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/registro" element={<Usuario/>} />
-        <Route path="/alumnos" element={<Alumnos/>} />
-        <Route path="/tutores" element={<Tutores />} />
-        <Route path="/grupos" element={<Grupos />} />
+        <Route path='/menu' element={<Menu/>}/>
+        <Route path="*" element={<NotFound />} />
+
+
+        <Route
+          path="/dashboard"
+          element={
+            <RutaPrivada>
+              <SidebarLayout />
+            </RutaPrivada>
+          }
+        />
+        <Route
+            path="/alumnos"
+            element={
+              <RutaPrivada>
+                <Alumnos />
+              </RutaPrivada>
+            }
+          />
+        <Route
+          path="/tutores"
+          element={
+            <RutaPrivada>
+              <Tutores />
+            </RutaPrivada>
+          }
+        />
+        <Route
+          path="/grupos"
+          element={
+            <RutaPrivada>
+              <Grupos />
+            </RutaPrivada>
+          }
+        />
       </Routes>
     </Router>
     
