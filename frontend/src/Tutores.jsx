@@ -550,6 +550,7 @@ const Tutores = () => {
                             nombre: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
                           })
                         }
+                        maxLength={10}
                         required
                         className="form-control"
                       />
@@ -674,6 +675,7 @@ const Tutores = () => {
                             numTel: e.target.value.replace(/\D/g, ''),
                           })
                         }
+                        maxLength={10}
                         required
                         className="form-control"
                       />

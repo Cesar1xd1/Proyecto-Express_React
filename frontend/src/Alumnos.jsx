@@ -478,6 +478,7 @@ const Alumnos = () => {
                         const value = e.target.value.replace(/[^0-9]/g, '');
                         setDatos(prev => ({ ...prev, numTel: value}));
                       }}
+                      maxLength={10}
                       required
                       className="form-control"
                     />
@@ -676,6 +677,7 @@ const Alumnos = () => {
                             numTel: e.target.value.replace(/\D/g, ''),
                           })
                         }
+                        maxLength={10}
                         required
                         className="form-control"
                       />
