@@ -116,7 +116,6 @@ app.post('/alumnos', async (request, response)=>{
         numTel : request.body.numTel
     });
 
-    
    
 
     const nuevoAlumno = await alumno.save();
