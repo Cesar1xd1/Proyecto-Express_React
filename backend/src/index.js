@@ -116,10 +116,8 @@ app.post('/alumnos', async (request, response)=>{
         numTel : request.body.numTel
     });
 
-    const existente = await Alumno.findOne({ numControl });
-      if (existente) {
-        return response.status(400).json({ message: 'Numero de control existente' });
-      }
+    
+   
 
     const nuevoAlumno = await alumno.save();
     response.status(201).json({exito:true});
