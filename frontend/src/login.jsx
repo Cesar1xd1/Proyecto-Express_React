@@ -6,19 +6,22 @@ import Menu from "./Menu";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
-  const URL = 'https://proyecto-express-react-b.onrender.com';
+  const URL = "https://proyecto-express-react-b.onrender.com";
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
   const [tipoUsuario, setTipoUsuario] = useState("alumno");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const [captchaValido, setCaptchaValido] = useState(false);
+  const [cargando, setCargando] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setCargando(true);
 
     if (!captchaValido) {
+      setCargando(false);
       Swal.fire(
         "Verificacion requerida",
         "Por favor verifica que no eres un robot",
@@ -51,6 +54,8 @@ const Login = () => {
       }
     } catch (err) {
       setError("Error del servidor");
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -101,18 +106,27 @@ const Login = () => {
 
           {error && <div className="alert alert-danger">{error}</div>}
 
-          <ReCAPTCHA
-            sitekey="6LcaR0krAAAAAPu5Ld9BkJCLhQ_hX-oJLy467LTc"
-            onChange={() => setCaptchaValido(true)}
-            onExpired={() => setCaptchaValido(false)}
-            className="mb-3"
-          />
-
-          <div className="text-center">
-            <button type="submit" className="btn btn-primary w-100">
-              Iniciar sesión
-            </button>
-          </div>
+          {cargando ? (
+            <div className="text-center my-3">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <ReCAPTCHA
+                sitekey="6LcaR0krAAAAAPu5Ld9BkJCLhQ_hX-oJLy467LTc"
+                onChange={() => setCaptchaValido(true)}
+                onExpired={() => setCaptchaValido(false)}
+                className="mb-3"
+              />
+              <div className="text-center">
+                <button type="submit" className="btn btn-primary w-100">
+                  Iniciar sesión
+                </button>
+              </div>
+            </>
+          )}
         </form>
       </div>
     </Menu>

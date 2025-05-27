@@ -13,20 +13,6 @@ import RutaPrivada from './RutaPrivada';
 
 
 function App() {
-
-  useEffect(() => {
-    const ping = () => {
-      fetch('https://proyecto-express-react-b.onrender.com')
-      .then(() => console.log('Ping enviado'))
-      .catch((err) => console.error('Error al hacer ping', err));
-    };
-
-    ping();
-
-    const interval = setInterval(ping, 5 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, []);
   return (
     
      <Router>

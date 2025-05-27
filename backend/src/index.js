@@ -25,10 +25,6 @@ connection.once('open', ()=>{
     console.log('Conexion EXITOSA a MongoDB');
 });
 
-app.get('/ping', (req, res) => {
-  res.send('pong');
-});
-
 //--- modelo de usuario ---
 const usuariosSchema = new mongoose.Schema({
   tipoUsuario: {type: String, enum: ["admin", "tutor", "alumno"], required: true},
