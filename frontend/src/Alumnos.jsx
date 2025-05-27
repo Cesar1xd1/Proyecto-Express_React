@@ -257,7 +257,9 @@ const Alumnos = () => {
               <DataTable
                 title="Lista de Alumnos"
                 columns={columnas}
+
                 data={alumnosFiltrados}
+
                 pagination
                 highlightOnHover
                 striped
@@ -299,7 +301,14 @@ const Alumnos = () => {
                       name="numControl"
                       value={datos.numControl}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^0-9]/g, "");
+
+                        
+
+                        let value = e.target.value.replace(/[^0-9]/g, "");
+                        if (value.length > 8) {
+                          value = value.slice(0, 8); 
+                        }
+
                         setDatos((prev) => ({ ...prev, numControl: value }));
                       }}
                       required
