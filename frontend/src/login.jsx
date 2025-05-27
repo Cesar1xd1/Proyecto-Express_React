@@ -68,6 +68,7 @@ const Login = () => {
           style={{ maxWidth: "400px", width: "100%" }}
         >
           <h2 className="mb-4 text-center">Iniciar Sesión</h2>
+          <h1>Prueba</h1>
 
           <div className="mb-3">
             <label className="form-label">Tipo de usuario:</label>
