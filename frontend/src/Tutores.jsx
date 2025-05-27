@@ -370,6 +370,8 @@ const Tutores = () => {
                         setDatos(prev => ({ ...prev, numControl: value}));
                       }}
                       required
+                      maxLength={8}
+                      minLength={8}
                       className="form-control"
                     />
                   </div>
@@ -477,6 +479,8 @@ const Tutores = () => {
                         setDatos(prev => ({ ...prev, numTel: value}));
                       }}
                       required
+                      maxLength={10}
+                      minLength={10}
                       className="form-control"
                     />
                   </div>
@@ -534,6 +538,8 @@ const Tutores = () => {
                         value={tutorSeleccionado.numControl}
                         readOnly
                         required
+                        maxLength={8}
+                        minLength={8}
                         className="form-control"
                       />
                     </div>
@@ -674,6 +680,8 @@ const Tutores = () => {
                             numTel: e.target.value.replace(/\D/g, ''),
                           })
                         }
+                        maxLength={10}
+                        minLength={10}
                         required
                         className="form-control"
                       />
