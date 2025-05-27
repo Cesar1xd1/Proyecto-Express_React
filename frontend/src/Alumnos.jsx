@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import SidebarLayout from "./SidebarLayout";
+
 import DataTable from 'react-data-table-component';
 
 const Alumnos = () => {
   const URL = 'https://proyecto-express-react-b.onrender.com';
   const [alumnos, setAlumnos] = useState([]);
+  const [busqueda,setBusqueda] = useState("");
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({
     numControl: "",
     nombre: "",
@@ -21,9 +24,7 @@ const Alumnos = () => {
   {
     /* varibles de Paginacion */
   }
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const rowsPerPage = 5;
+  
   const esquema = {
     numControl: "",
     nombre: "",
@@ -48,43 +49,14 @@ const Alumnos = () => {
     }));
   };
 
-  {
-    /* proxima pagina*/
-  }
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-  {
-    /* anterior pagina */
-  }
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  {
-    /* Calcular botones necesarios y su numeracion */
-  }
-  const getPaginationRange = () => {
-    const rangeSize = 3;
-    const start = Math.floor((currentPage - 1) / rangeSize) * rangeSize + 1;
-    const end = Math.min(start + rangeSize - 1, totalPages);
-    return [start, end];
-  };
-  {
-    /* variables para usar en el dom */
-  }
-  const [startPage, endPage] = getPaginationRange();
-  const alumnosDT = alumnos.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
-
-  {
-    /* Eliminar */
-  }
+  
+ 
+  const alumnosFiltrados = alumnos.filter((alumno) =>
+  `${alumno.numControl} ${alumno.nombre} ${alumno.primerAp} ${alumno.segundoAp} ${alumno.semestre} ${alumno.carrera} ${alumno.fechaNac} ${alumno.numTel}`
+    .toLowerCase()
+    .includes(busqueda.toLowerCase())
+);
+  
 
   const columnas = [
   { name: 'Numero de Control', selector: row => row.numControl, sortable: true },
@@ -93,14 +65,14 @@ const Alumnos = () => {
   { name: 'Segundo Apellido', selector: row => row.segundoAp, sortable: true },
   { name: 'Semestre', selector: row => row.semestre, sortable: true },
   { name: 'Carrera', selector: row => row.carrera, sortable: true },
-  { name: 'Fecha de Nacimiento', selector: row => row.fechaNac },
+  { name: 'Fecha de Nacimiento', selector: row => row.fechaNac,width: '120px' },
   { name: 'Num. de Telefono', selector: row => row.numTel },
   {
     name: 'Acción',
     cell: row => (
       <>
         <button
-          className="btn btn-info btn-sm me-1 pencil-square"
+          className="btn btn-info btn-sm me-1 bi-pencil-square"
           data-bs-target="#modalC"
           data-bs-toggle="modal"
           onClick={() => cargarAlumno(row)}
@@ -108,18 +80,18 @@ const Alumnos = () => {
         
         </button>
         <button
-          className="btn btn-danger btn-sm me-1"
+          className="btn btn-danger btn-sm me-1 bi-trash-fill"
           onClick={() => eliminarAlumno(row._id)}
         >
-          Eliminar
+          
         </button>
         <button
-          className="btn btn-warning btn-sm"
+          className="btn btn-warning btn-sm bi-person-lines-fill"
           data-bs-target="#modalD"
           data-bs-toggle="modal"
           onClick={() => cargarAlumno(row)}
         >
-          Detalle
+          
         </button>
       </>
     )
@@ -167,7 +139,7 @@ const Alumnos = () => {
         setAlumnos(data);
         
        
-        setTotalPages(Math.ceil(data.length / rowsPerPage)); // Establece el número total de páginas
+        // Establece el número total de páginas
       })
       .catch((err) => console.error("Error al obtener alumnos:", err));
   };
@@ -270,10 +242,17 @@ const Alumnos = () => {
           </div>
           <div className="card-body">
             <div className="table-responsive">
+              <input
+  type="text"
+  placeholder="Buscar alumno..."
+  className="form-control mb-3"
+  value={busqueda}
+  onChange={(e) => setBusqueda(e.target.value)}
+/>
               <DataTable
   title="Lista de Alumnos"
   columns={columnas}
-  data={alumnosDT}
+  data={alumnos}
   pagination
   highlightOnHover
   striped
