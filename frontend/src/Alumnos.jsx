@@ -372,6 +372,8 @@ const Alumnos = () => {
                         setDatos(prev => ({ ...prev, numControl: value}));
                       }}
                       required
+                      maxLength={8}
+                      minLength={8}
                       className="form-control"
                     />
                   </div>
@@ -479,6 +481,7 @@ const Alumnos = () => {
                         setDatos(prev => ({ ...prev, numTel: value}));
                       }}
                       maxLength={10}
+                      minLength={10}
                       required
                       className="form-control"
                     />
@@ -537,6 +540,8 @@ const Alumnos = () => {
                         value={alumnoSeleccionado.numControl}
                         readOnly
                         required
+                        maxLength={8}
+                        minLength={8}
                         className="form-control"
                       />
                     </div>
@@ -678,6 +683,7 @@ const Alumnos = () => {
                           })
                         }
                         maxLength={10}
+                        minLength={10}
                         required
                         className="form-control"
                       />
