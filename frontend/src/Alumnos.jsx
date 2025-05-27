@@ -5,12 +5,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import SidebarLayout from "./SidebarLayout";
 
-import DataTable from 'react-data-table-component';
+import DataTable from "react-data-table-component";
 
 const Alumnos = () => {
-  const URL = 'https://proyecto-express-react-b.onrender.com';
+  const URL = "https://proyecto-express-react-b.onrender.com";
   const [alumnos, setAlumnos] = useState([]);
-  const [busqueda,setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState("");
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({
     numControl: "",
     nombre: "",
@@ -24,7 +24,7 @@ const Alumnos = () => {
   {
     /* varibles de Paginacion */
   }
-  
+
   const esquema = {
     numControl: "",
     nombre: "",
@@ -49,55 +49,61 @@ const Alumnos = () => {
     }));
   };
 
-  
- 
   const alumnosFiltrados = alumnos.filter((alumno) =>
-  `${alumno.numControl} ${alumno.nombre} ${alumno.primerAp} ${alumno.segundoAp} ${alumno.semestre} ${alumno.carrera} ${alumno.fechaNac} ${alumno.numTel}`
-    .toLowerCase()
-    .includes(busqueda.toLowerCase())
-);
-  
+    `${alumno.numControl} ${alumno.nombre} ${alumno.primerAp} ${alumno.segundoAp} ${alumno.semestre} ${alumno.carrera} ${alumno.fechaNac} ${alumno.numTel}`
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+  );
 
   const columnas = [
-  { name: 'Numero de Control', selector: row => row.numControl, sortable: true },
-  { name: 'Nombre', selector: row => row.nombre, sortable: true },
-  { name: 'Primer Apellido', selector: row => row.primerAp, sortable: true },
-  { name: 'Segundo Apellido', selector: row => row.segundoAp, sortable: true },
-  { name: 'Semestre', selector: row => row.semestre, sortable: true },
-  { name: 'Carrera', selector: row => row.carrera, sortable: true },
-  { name: 'Fecha de Nacimiento', selector: row => row.fechaNac,width: '120px' },
-  { name: 'Num. de Telefono', selector: row => row.numTel },
-  {
-    name: 'Acción',
-    cell: row => (
-      <>
-        <button
-          className="btn btn-info btn-sm me-1 bi-pencil-square"
-          data-bs-target="#modalC"
-          data-bs-toggle="modal"
-          onClick={() => cargarAlumno(row)}
-        >
-        
-        </button>
-        <button
-          className="btn btn-danger btn-sm me-1 bi-trash-fill"
-          onClick={() => eliminarAlumno(row._id)}
-        >
-          
-        </button>
-        <button
-          className="btn btn-warning btn-sm bi-person-lines-fill"
-          data-bs-target="#modalD"
-          data-bs-toggle="modal"
-          onClick={() => cargarAlumno(row)}
-        >
-          
-        </button>
-      </>
-    )
-  }
-];
-
+    {
+      name: "Numero de Control",
+      selector: (row) => row.numControl,
+      sortable: true,
+    },
+    { name: "Nombre", selector: (row) => row.nombre, sortable: true },
+    {
+      name: "Primer Apellido",
+      selector: (row) => row.primerAp,
+      sortable: true,
+    },
+    {
+      name: "Segundo Apellido",
+      selector: (row) => row.segundoAp,
+      sortable: true,
+    },
+    { name: "Semestre", selector: (row) => row.semestre, sortable: true },
+    { name: "Carrera", selector: (row) => row.carrera, sortable: true },
+    {
+      name: "Fecha de Nacimiento",
+      selector: (row) => row.fechaNac,
+      width: "120px",
+    },
+    { name: "Num. de Telefono", selector: (row) => row.numTel },
+    {
+      name: "Acción",
+      cell: (row) => (
+        <>
+          <button
+            className="btn btn-info btn-sm me-1 bi-pencil-square"
+            data-bs-target="#modalC"
+            data-bs-toggle="modal"
+            onClick={() => cargarAlumno(row)}
+          ></button>
+          <button
+            className="btn btn-danger btn-sm me-1 bi-trash-fill"
+            onClick={() => eliminarAlumno(row._id)}
+          ></button>
+          <button
+            className="btn btn-warning btn-sm bi-person-lines-fill"
+            data-bs-target="#modalD"
+            data-bs-toggle="modal"
+            onClick={() => cargarAlumno(row)}
+          ></button>
+        </>
+      ),
+    },
+  ];
 
   const eliminarAlumno = (id) => {
     Swal.fire({
@@ -137,8 +143,7 @@ const Alumnos = () => {
       .then((res) => res.json())
       .then((data) => {
         setAlumnos(data);
-        
-       
+
         // Establece el número total de páginas
       })
       .catch((err) => console.error("Error al obtener alumnos:", err));
@@ -174,7 +179,7 @@ const Alumnos = () => {
         console.log("Alumno agregado:", data);
         Swal.fire("Éxito", "Alumno agregado correctamente", "success");
         fetchAlumnos();
-        
+
         setDatos(esquema);
         document.getElementById("cerrarA").click();
       })
@@ -243,24 +248,23 @@ const Alumnos = () => {
           <div className="card-body">
             <div className="table-responsive">
               <input
-  type="text"
-  placeholder="Buscar alumno..."
-  className="form-control mb-3"
-  value={busqueda}
-  onChange={(e) => setBusqueda(e.target.value)}
-/>
+                type="text"
+                placeholder="Buscar alumno..."
+                className="form-control mb-3"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
               <DataTable
-  title="Lista de Alumnos"
-  columns={columnas}
-  data={alumnos}
-  pagination
-  highlightOnHover
-  striped
-  responsive
-/>
+                title="Lista de Alumnos"
+                columns={columnas}
+                data={alumnos}
+                pagination
+                highlightOnHover
+                striped
+                responsive
+              />
             </div>
             {/* Paginacion */}
-            
           </div>
         </div>
 
@@ -295,8 +299,11 @@ const Alumnos = () => {
                       name="numControl"
                       value={datos.numControl}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^0-9]/g, '');
-                        setDatos(prev => ({ ...prev, numControl: value}));
+                        let value = e.target.value.replace(/[^0-9]/g, "");
+                        if (value.length > 8) {
+                          value = value.slice(0, 8); 
+                        }
+                        setDatos((prev) => ({ ...prev, numControl: value }));
                       }}
                       required
                       maxLength={8}
@@ -312,8 +319,11 @@ const Alumnos = () => {
                       name="nombre"
                       value={datos.nombre}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-                        setDatos(prev => ({ ...prev, nombre: value}));
+                        const value = e.target.value.replace(
+                          /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                          ""
+                        );
+                        setDatos((prev) => ({ ...prev, nombre: value }));
                       }}
                       required
                       className="form-control"
@@ -327,8 +337,11 @@ const Alumnos = () => {
                       name="primerAp"
                       value={datos.primerAp}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-                        setDatos(prev => ({ ...prev, primerAp: value}));
+                        const value = e.target.value.replace(
+                          /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                          ""
+                        );
+                        setDatos((prev) => ({ ...prev, primerAp: value }));
                       }}
                       required
                       className="form-control"
@@ -342,8 +355,11 @@ const Alumnos = () => {
                       name="segundoAp"
                       value={datos.segundoAp}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-                        setDatos(prev => ({ ...prev, segundoAp: value}));
+                        const value = e.target.value.replace(
+                          /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                          ""
+                        );
+                        setDatos((prev) => ({ ...prev, segundoAp: value }));
                       }}
                       required
                       className="form-control"
@@ -404,8 +420,8 @@ const Alumnos = () => {
                       name="numTel"
                       value={datos.numTel}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^0-9]/g, '');
-                        setDatos(prev => ({ ...prev, numTel: value}));
+                        const value = e.target.value.replace(/[^0-9]/g, "");
+                        setDatos((prev) => ({ ...prev, numTel: value }));
                       }}
                       maxLength={10}
                       minLength={10}
@@ -482,7 +498,10 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            nombre: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
+                            nombre: e.target.value.replace(
+                              /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                              ""
+                            ),
                           })
                         }
                         required
@@ -499,7 +518,10 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            primerAp: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
+                            primerAp: e.target.value.replace(
+                              /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                              ""
+                            ),
                           })
                         }
                         required
@@ -516,7 +538,10 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            segundoAp: e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ''),
+                            segundoAp: e.target.value.replace(
+                              /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                              ""
+                            ),
                           })
                         }
                         required
@@ -606,7 +631,7 @@ const Alumnos = () => {
                         onChange={(e) =>
                           setAlumnoSeleccionado({
                             ...alumnoSeleccionado,
-                            numTel: e.target.value.replace(/\D/g, ''),
+                            numTel: e.target.value.replace(/\D/g, ""),
                           })
                         }
                         maxLength={10}

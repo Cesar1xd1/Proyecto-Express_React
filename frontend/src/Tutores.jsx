@@ -366,7 +366,10 @@ const Tutores = () => {
                       name="numControl"
                       value={datos.numControl}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^0-9]/g, '');
+                        let value = e.target.value.replace(/[^0-9]/g, "");
+                        if (value.length > 8) {
+                          value = value.slice(0, 8); 
+                        }
                         setDatos(prev => ({ ...prev, numControl: value}));
                       }}
                       required
@@ -475,7 +478,10 @@ const Tutores = () => {
                       name="numTel"
                       value={datos.numTel}
                       onChange={(e) => {
-                        const value = e.target.value.replace(/[^0-9]/g, '');
+                        let value = e.target.value.replace(/[^0-9]/g, "");
+                        if (value.length > 10) {
+                          value = value.slice(0, 10); 
+                        }
                         setDatos(prev => ({ ...prev, numTel: value}));
                       }}
                       required
@@ -677,6 +683,7 @@ const Tutores = () => {
                         onChange={(e) =>
                           setTutorSeleccionado({
                             ...tutorSeleccionado,
+                            
                             numTel: e.target.value.replace(/\D/g, ''),
                           })
                         }
