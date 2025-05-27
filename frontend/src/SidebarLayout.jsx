@@ -10,30 +10,41 @@ const SidebarLayout = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const revisarSesion = () => {
-      const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
-      const sesionExpira = localStorage.getItem("sesionExpira");
-      if (!usuarioGuardado || !sesionExpira) {
-        navigate("/login");
-        return;
-      }
+    const usuarioGuardado = JSON.parse(localStorage.getItem('usuario'));
+    if(!usuarioGuardado){
+      navigate('/login');
+      return;
+    }
+    setTipoUsuario(usuarioGuardado.tipoUsuario);
 
-      const ahora = new Date().getTime();
+    const tiempoInactividad = 60000;
+    let timeoutId;
 
-      if (ahora > Number(sesionExpira)) {
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("sesionExpira");
-        navigate("/login");
-        return;
-      }
-      setTipoUsuario(usuarioGuardado.tipoUsuario);
+    const cerrarSesionPorInactividad =() => {
+      localStorage.removeItem('usuario');
+      localStorage.removeItem('sesionExpira');
+      navigate('/login');
     };
 
-    revisarSesion();
+    const reiniciarTemporizador =() => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(cerrarSesionPorInactividad, tiempoInactividad);
+    };
 
-    const intervalo = setInterval(revisarSesion, 10000);
+    const eventos = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'];
 
-    return () => clearInterval(intervalo);
+    eventos.forEach(evento => {
+      window.addEventListener(evento, reiniciarTemporizador);
+    });
+
+    reiniciarTemporizador();
+
+    return () => {
+      clearTimeout(timeoutId);
+      eventos.forEach(evento => {
+        window.removeEventListener(evento, reiniciarTemporizador);
+      });
+    };
     
   }, [navigate]);
 
