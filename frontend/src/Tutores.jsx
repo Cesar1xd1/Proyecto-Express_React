@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import DataTable from "react-data-table-component";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import SidebarLayout from "./SidebarLayout";
 
 const Tutores = () => {
   const URL = 'https://proyecto-express-react-b.onrender.com';
   const [tutores, setTutores] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
   const [tutorSeleccionado, setTutorSeleccionado] = useState({
     numControl: "",
     nombre: "",
@@ -17,12 +20,13 @@ const Tutores = () => {
     fechaNac: "",
     numTel: "",
   });
-  {
-    /* varibles de Paginacion */
-  }
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const rowsPerPage = 5;
+
+   const alumnosFiltrados = tutores.filter((tutores) =>
+    `${tutores.numControl} ${tutores.nombre} ${tutores.primerAp} ${tutores.segundoAp} ${tutores.semestre} ${tutores.carrera} ${tutores.fechaNac} ${tutores.numTel}`
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+  );
+ 
   const esquema = {
     numControl: "",
     nombre: "",
@@ -47,39 +51,56 @@ const Tutores = () => {
     }));
   };
 
-  {
-    /* proxima pagina*/
-  }
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-  {
-    /* anterior pagina */
-  }
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  {
-    /* Calcular botones necesarios y su numeracion */
-  }
-  const getPaginationRange = () => {
-    const rangeSize = 3;
-    const start = Math.floor((currentPage - 1) / rangeSize) * rangeSize + 1;
-    const end = Math.min(start + rangeSize - 1, totalPages);
-    return [start, end];
-  };
-  {
-    /* variables para usar en el dom */
-  }
-  const [startPage, endPage] = getPaginationRange();
-  const tutoresDT = tutores.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
+  const columnas = [
+    {
+      name: "Numero de Control",
+      selector: (row) => row.numControl,
+      sortable: true,
+    },
+    { name: "Nombre", selector: (row) => row.nombre, sortable: true },
+    {
+      name: "Primer Apellido",
+      selector: (row) => row.primerAp,
+      sortable: true,
+    },
+    {
+      name: "Segundo Apellido",
+      selector: (row) => row.segundoAp,
+      sortable: true,
+    },
+    { name: "Semestre", selector: (row) => row.semestre, sortable: true },
+    { name: "Carrera", selector: (row) => row.carrera, sortable: true },
+    {
+      name: "Fecha de Nacimiento",
+      selector: (row) => row.fechaNac,
+      width: "120px",
+    },
+    { name: "Num. de Telefono", selector: (row) => row.numTel },
+    {
+      name: "Acción",
+      cell: (row) => (
+        <>
+          <button
+            className="btn btn-info btn-sm me-1 bi-pencil-square"
+            data-bs-target="#modalC"
+            data-bs-toggle="modal"
+            onClick={() => cargarTutor(row)}
+          ></button>
+          <button
+            className="btn btn-danger btn-sm me-1 bi-trash-fill"
+            onClick={() => eliminarTutor(row._id)}
+          ></button>
+          <button
+            className="btn btn-warning btn-sm bi-person-lines-fill"
+            data-bs-target="#modalD"
+            data-bs-toggle="modal"
+            onClick={() => cargarTutor(row)}
+          ></button>
+        </>
+      ),
+    },
+  ];
+  
 
   {
     /* Eliminar */
@@ -222,116 +243,24 @@ const Tutores = () => {
           </div>
           <div className="card-body">
             <div className="table-responsive">
-              <table className="table table-bordered table-striped">
-                <thead>
-                  <tr className="text-center">
-                    <th>Numero de Control</th>
-                    <th>Nombre</th>
-                    <th colSpan={2} className="text-center">
-                      Apellidos
-                    </th>
-
-                    <th>Semestre</th>
-                    <th>Carrera</th>
-                    <th>Fecha de nacimiento</th>
-                    <th>Num. de Telefono</th>
-                    <th colSpan={3} className="text-center">
-                      Accion
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Cargar registros de forma dinamica */}
-                  {tutoresDT.length > 0 ? (
-                    tutoresDT.map((row) => (
-                      <tr key={row._id}>
-                        <td>{row.numControl}</td>
-                        <td>{row.nombre}</td>
-                        <td>{row.primerAp}</td>
-                        <td>{row.segundoAp}</td>
-                        <td>{row.semestre}</td>
-                        <td>{row.carrera}</td>
-                        <td>{row.fechaNac}</td>
-                        <td>{row.numTel}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-info btn-sm"
-                            data-bs-target="#modalC"
-                            data-bs-toggle="modal"
-                            onClick={() => cargarTutor(row)}
-                          >
-                            Editar
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm"
-                            onClick={() => eliminarTutor(row._id)}
-                          >
-                            Eliminar
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-warning btn-sm"
-                            data-bs-target="#modalD"
-                            data-bs-toggle="modal"
-                            onClick={() => cargarTutor(row)}
-                          >
-                            Detalle
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={9} className="text-center">
-                        No hay registros.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+              <input
+                type="text"
+                placeholder="Buscar alumno..."
+                className="form-control mb-3"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+              <DataTable
+                title="Lista de Alumnos"
+                columns={columnas}
+                data={alumnosFiltrados}
+                pagination
+                highlightOnHover
+                striped
+                responsive
+              />
             </div>
-            {/* Paginacion */}
-            <nav aria-label="Paginación">
-              <ul className="pagination justify-content-center">
-                <li
-                  className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-                >
-                  <button className="page-link" onClick={handlePrevious}>
-                    Anterior
-                  </button>
-                </li>
-                {[...Array(endPage - startPage + 1)].map((_, index) => (
-                  <li
-                    key={startPage + index}
-                    className={`page-item ${
-                      currentPage === startPage + index ? "active" : ""
-                    }`}
-                  >
-                    <button
-                      className="page-link"
-                      onClick={() => setCurrentPage(startPage + index)}
-                    >
-                      {startPage + index}
-                    </button>
-                  </li>
-                ))}
-                <li
-                  className={`page-item ${
-                    currentPage === totalPages ? "disabled" : ""
-                  }`}
-                >
-                  <button className="page-link" onClick={handleNext}>
-                    Siguiente
-                  </button>
-                </li>
-              </ul>
-            </nav>
+            
           </div>
         </div>
 
