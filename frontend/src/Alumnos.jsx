@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import SidebarLayout from "./SidebarLayout";
+import DataTable from 'react-data-table-component';
 
 const Alumnos = () => {
   const URL = 'https://proyecto-express-react-b.onrender.com';
@@ -84,6 +85,48 @@ const Alumnos = () => {
   {
     /* Eliminar */
   }
+
+  const columnas = [
+  { name: 'Numero de Control', selector: row => row.numControl, sortable: true },
+  { name: 'Nombre', selector: row => row.nombre, sortable: true },
+  { name: 'Primer Apellido', selector: row => row.primerAp, sortable: true },
+  { name: 'Segundo Apellido', selector: row => row.segundoAp, sortable: true },
+  { name: 'Semestre', selector: row => row.semestre, sortable: true },
+  { name: 'Carrera', selector: row => row.carrera, sortable: true },
+  { name: 'Fecha de Nacimiento', selector: row => row.fechaNac },
+  { name: 'Num. de Telefono', selector: row => row.numTel },
+  {
+    name: 'Acción',
+    cell: row => (
+      <>
+        <button
+          className="btn btn-info btn-sm me-1 pencil-square"
+          data-bs-target="#modalC"
+          data-bs-toggle="modal"
+          onClick={() => cargarAlumno(row)}
+        >
+        
+        </button>
+        <button
+          className="btn btn-danger btn-sm me-1"
+          onClick={() => eliminarAlumno(row._id)}
+        >
+          Eliminar
+        </button>
+        <button
+          className="btn btn-warning btn-sm"
+          data-bs-target="#modalD"
+          data-bs-toggle="modal"
+          onClick={() => cargarAlumno(row)}
+        >
+          Detalle
+        </button>
+      </>
+    )
+  }
+];
+
+
   const eliminarAlumno = (id) => {
     Swal.fire({
       title: "¿Estás seguro?",
@@ -122,6 +165,8 @@ const Alumnos = () => {
       .then((res) => res.json())
       .then((data) => {
         setAlumnos(data);
+        
+       
         setTotalPages(Math.ceil(data.length / rowsPerPage)); // Establece el número total de páginas
       })
       .catch((err) => console.error("Error al obtener alumnos:", err));
@@ -157,6 +202,7 @@ const Alumnos = () => {
         console.log("Alumno agregado:", data);
         Swal.fire("Éxito", "Alumno agregado correctamente", "success");
         fetchAlumnos();
+        
         setDatos(esquema);
         document.getElementById("cerrarA").click();
       })
@@ -224,116 +270,18 @@ const Alumnos = () => {
           </div>
           <div className="card-body">
             <div className="table-responsive">
-              <table className="table table-bordered table-striped">
-                <thead>
-                  <tr className="text-center">
-                    <th>Numero de Control</th>
-                    <th>Nombre</th>
-                    <th colSpan={2} className="text-center">
-                      Apellidos
-                    </th>
-
-                    <th>Semestre</th>
-                    <th>Carrera</th>
-                    <th>Fecha de nacimiento</th>
-                    <th>Num. de Telefono</th>
-                    <th colSpan={3} className="text-center">
-                      Accion
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Cargar registros de forma dinamica */}
-                  {alumnosDT.length > 0 ? (
-                    alumnosDT.map((row) => (
-                      <tr key={row._id}>
-                        <td>{row.numControl}</td>
-                        <td>{row.nombre}</td>
-                        <td>{row.primerAp}</td>
-                        <td>{row.segundoAp}</td>
-                        <td>{row.semestre}</td>
-                        <td>{row.carrera}</td>
-                        <td>{row.fechaNac}</td>
-                        <td>{row.numTel}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-info btn-sm"
-                            data-bs-target="#modalC"
-                            data-bs-toggle="modal"
-                            onClick={() => cargarAlumno(row)}
-                          >
-                            Editar
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm"
-                            onClick={() => eliminarAlumno(row._id)}
-                          >
-                            Eliminar
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-warning btn-sm"
-                            data-bs-target="#modalD"
-                            data-bs-toggle="modal"
-                            onClick={() => cargarAlumno(row)}
-                          >
-                            Detalle
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={9} className="text-center">
-                        No hay registros.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+              <DataTable
+  title="Lista de Alumnos"
+  columns={columnas}
+  data={alumnosDT}
+  pagination
+  highlightOnHover
+  striped
+  responsive
+/>
             </div>
             {/* Paginacion */}
-            <nav aria-label="Paginación">
-              <ul className="pagination justify-content-center">
-                <li
-                  className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
-                >
-                  <button className="page-link" onClick={handlePrevious}>
-                    Anterior
-                  </button>
-                </li>
-                {[...Array(endPage - startPage + 1)].map((_, index) => (
-                  <li
-                    key={startPage + index}
-                    className={`page-item ${
-                      currentPage === startPage + index ? "active" : ""
-                    }`}
-                  >
-                    <button
-                      className="page-link"
-                      onClick={() => setCurrentPage(startPage + index)}
-                    >
-                      {startPage + index}
-                    </button>
-                  </li>
-                ))}
-                <li
-                  className={`page-item ${
-                    currentPage === totalPages ? "disabled" : ""
-                  }`}
-                >
-                  <button className="page-link" onClick={handleNext}>
-                    Siguiente
-                  </button>
-                </li>
-              </ul>
-            </nav>
+            
           </div>
         </div>
 
