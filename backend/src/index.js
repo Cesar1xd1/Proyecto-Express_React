@@ -207,11 +207,6 @@ app.post('/tutores', async (request, response)=>{
         fechaNac : request.body.fechaNac,
         numTel : request.body.numTel
     });
-
-    const existente = await Tutor.findOne({ numControl });
-      if (existente) {
-        return response.status(400).json({ message: 'Numero de control existente' });
-      }
     const nuevoTutor = await tutor.save();
     response.status(201).json({exito:true});
 });
