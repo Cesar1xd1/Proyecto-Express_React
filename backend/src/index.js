@@ -44,7 +44,7 @@ app.post('/usuario', async (request, response) => {
         return response.status(400).json({ message: 'Usuario existente' });
       }
 
-      const hash = await bcrypt.hash(contraseña, 15);
+      const hash = await bcrypt.hash(contraseña, 10);
       const nuevoUsuario = new Usuario({ tipoUsuario, usuario, contraseña: hash });
 
       await nuevoUsuario.save();
