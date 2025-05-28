@@ -58,7 +58,7 @@ app.post('/usuario', async (request, response) => {
 
  
 // --- login ---
-aapp.post('/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   console.time('login');
   const { usuario, contraseña, tipoUsuario } = req.body;
 
