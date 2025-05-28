@@ -58,12 +58,15 @@ app.post('/usuario', async (request, response) => {
 
  
 // --- login ---
-app.post('/login', async (req, res) => {
+aapp.post('/login', async (req, res) => {
+  console.time('login');
   const { usuario, contraseña, tipoUsuario } = req.body;
 
   try {
+    console.time('DB Lookup');
     const usuarioEncontrado = await Usuario.findOne({ usuario });
-    console.log('Ya se inicio1');
+    console.timeEnd('DB Lookup');
+
     if (!usuarioEncontrado) {
       return res.status(400).json({ message: 'Usuario incorrecto' });
     }
@@ -72,21 +75,25 @@ app.post('/login', async (req, res) => {
       return res.status(403).json({ message: 'Tipo de usuario incorrecto' });
     }
 
+    console.time('Password Compare');
     const match = await bcrypt.compare(contraseña, usuarioEncontrado.contraseña);
+    console.timeEnd('Password Compare');
+
     if (!match) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
+
     res.status(200).json({
       message: 'Inicio de sesión exitoso',
       usuario: usuarioEncontrado.usuario,
       tipoUsuario: usuarioEncontrado.tipoUsuario,
     });
-    console.log('Ya se inicio2');
-    
 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error del servidor' });
+  } finally {
+    console.timeEnd('login');
   }
 });
 
