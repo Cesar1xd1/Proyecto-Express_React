@@ -48,6 +48,8 @@ const Login = () => {
           JSON.stringify({ usuario, tipoUsuario })
         );
         localStorage.setItem("sesionExpira", expiracionSesion);
+        
+
         navigate("/dashboard");
       } else {
         setError(data.message || "Error al iniciar sesión");

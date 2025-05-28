@@ -181,7 +181,7 @@ const Tutores = () => {
       })
       .catch((err) => {
         console.error("Error al agregar:", err);
-        Swal.fire("Error", "No se pudo agregar el tutor", "error");
+        Swal.fire("Error", "Ese numero de control ya existe", "error");
       });
   };
 

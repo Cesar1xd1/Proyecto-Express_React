@@ -185,7 +185,7 @@ const Alumnos = () => {
       })
       .catch((err) => {
         console.error("Error al agregar:", err);
-        Swal.fire("Error", "No se pudo agregar el alumno", "error");
+        Swal.fire("Error", "Ese numero de control ya existe", "error");
       });
   };
 

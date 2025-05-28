@@ -63,7 +63,7 @@ app.post('/login', async (req, res) => {
 
   try {
     const usuarioEncontrado = await Usuario.findOne({ usuario });
-
+    console.log('Ya se inicio');
     if (!usuarioEncontrado) {
       return res.status(400).json({ message: 'Usuario incorrecto' });
     }
@@ -81,6 +81,7 @@ app.post('/login', async (req, res) => {
       usuario: usuarioEncontrado.usuario,
       tipoUsuario: usuarioEncontrado.tipoUsuario,
     });
+    
 
   } catch (err) {
     console.error(err);
